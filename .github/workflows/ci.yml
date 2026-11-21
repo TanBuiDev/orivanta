@@ -1,6 +1,6 @@
-name: "🚀 PR Build Matrix"
+name: Orivanta CI
 
-run-name: "🚀 PR build matrix · ${{ github.ref_name }}"
+run-name: "Orivanta CI · ${{ github.ref_name }}"
 
 on:
   workflow_dispatch:
@@ -9,14 +9,14 @@ on:
       - "main"
   push:
     branches:
-      # Trusted default-branch builds seed caches readable by future tags.
       - "main"
-      - "feature/build-matrix*"
-      - "feature/build-matrix/**"
 
 concurrency:
   group: build-matrix-${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
   cancel-in-progress: true
+
+permissions:
+  contents: read
 
 env:
   CARGO_TERM_COLOR: always
@@ -30,13 +30,15 @@ jobs:
     steps:
       - name: "📥 Checkout repository"
         uses: actions/checkout@v5
+        with:
+          persist-credentials: false
 
       - name: "⚡ Restore verified frontend"
         id: frontend-cache
         uses: actions/cache@v6
         with:
           path: dist
-          key: frontend-v1-${{ hashFiles('package.json', 'package-lock.json', 'index.html', 'vite.config.ts', 'tsconfig*.json', 'src/**', 'public/**', 'announcements.json', 'remote-config.json', 'scripts/check_locales.cjs', 'scripts/sync-version.js', '.github/workflows/build-matrix.yml') }}
+          key: frontend-v1-${{ hashFiles('package.json', 'package-lock.json', 'index.html', 'vite.config.ts', 'tsconfig*.json', 'src/**', 'public/**', 'announcements.json', 'remote-config.json', 'scripts/check_locales.cjs', 'scripts/sync-version.js', '.github/workflows/ci.yml') }}
 
       - name: "🟢 Set up Node.js"
         if: steps.frontend-cache.outputs.cache-hit != 'true'
@@ -47,6 +49,8 @@ jobs:
 
       - name: "📦 Install frontend dependencies"
         if: steps.frontend-cache.outputs.cache-hit != 'true'
+        env:
+          ELECTRON_SKIP_BINARY_DOWNLOAD: "1"
         run: npm ci --prefer-offline --no-audit --no-fund
 
       - name: "⚡ Restore incremental typecheck state"
@@ -64,7 +68,6 @@ jobs:
         run: |
           mkdir -p .ci-cache
           npm run sync-version
-          node scripts/check_locales.cjs
           npx tsc --incremental --tsBuildInfoFile .ci-cache/frontend.tsbuildinfo --noEmit
           npx vite build
 
@@ -105,7 +108,10 @@ jobs:
       contents: read
     steps:
       - name: 📥 Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+          persist-credentials: false
 
       - name: ⚙️ Node.js setup
         uses: actions/setup-node@v4
@@ -114,13 +120,30 @@ jobs:
           cache: "npm"
 
       - name: 📦 Install frontend dependencies
-        run: npm ci
+        env:
+          ELECTRON_SKIP_BINARY_DOWNLOAD: "1"
+        run: npm ci --no-audit --no-fund
 
       - name: 🧪 TypeScript regression tests
         run: npm test
 
       - name: 🧪 Release script tests
         run: npm run test:release
+
+      - name: Check translations and distribution isolation
+        run: |
+          node scripts/check_locales.cjs
+          node --test scripts/custom/*.test.cjs
+
+      - name: Check whitespace in changed source
+        if: github.event_name == 'pull_request'
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+        run: git diff --check "$BASE_SHA...$HEAD_SHA"
+
+      - name: Audit shipped npm dependencies
+        run: npm audit --omit=dev --audit-level=high
 
 
   preflight-ts-windows:
@@ -130,7 +153,9 @@ jobs:
       contents: read
     steps:
       - name: 📥 Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
+        with:
+          persist-credentials: false
 
       - name: ⚙️ Node.js setup
         uses: actions/setup-node@v4
@@ -139,7 +164,9 @@ jobs:
           cache: "npm"
 
       - name: 📦 Install frontend dependencies
-        run: npm ci
+        env:
+          ELECTRON_SKIP_BINARY_DOWNLOAD: "1"
+        run: npm ci --no-audit --no-fund
 
       - name: 🧪 TypeScript regression tests
         run: npm test
@@ -148,10 +175,11 @@ jobs:
     name: "${{ matrix.icon }} ${{ matrix.label }}"
     needs: [prepare, preflight-tests, preflight-ts-windows]
     runs-on: ${{ matrix.platform }}
+    timeout-minutes: 90
     permissions:
       contents: read
     strategy:
-      fail-fast: true
+      fail-fast: false
       matrix:
         include:
           - label: macOS arm64
@@ -194,6 +222,8 @@ jobs:
     steps:
       - name: "📥 Checkout repository"
         uses: actions/checkout@v5
+        with:
+          persist-credentials: false
 
       - name: "🐧 Install Linux build dependencies"
         if: runner.os == 'Linux'
@@ -214,7 +244,7 @@ jobs:
           target: ${{ matrix.cache_target }}
 
       - name: "📥 Reuse shared frontend"
-        uses: actions/download-artifact@v8
+        uses: actions/download-artifact@v6
         with:
           name: build-inputs
           path: .
@@ -223,13 +253,14 @@ jobs:
         if: matrix.platform == 'ubuntu-22.04'
         working-directory: src-tauri
         run: |
-          cargo test instance_configuration_save --lib
-          cargo test quick_config_catalog_only_context_preservation --lib
-          cargo test claude_desktop_gateway --lib --locked
+          cargo test --locked instance_configuration_save --lib
+          cargo test --locked quick_config_catalog_only_context_preservation --lib
+          cargo test --locked claude_desktop_gateway --lib
+          cargo test --locked external_import --lib
 
       - name: "🧪 Test core Rust library"
         if: matrix.platform == 'ubuntu-22.04'
-        run: cargo test --package cockpit-core -- --test-threads=1
+        run: cargo test --locked --package cockpit-core -- --test-threads=1
 
       - name: "🧱 Compile and link application"
         run: |
@@ -260,3 +291,21 @@ jobs:
               printf '❌ Build did not complete for `%s`.\n' "${{ matrix.target }}"
             fi
           } >> "$GITHUB_STEP_SUMMARY"
+
+  required:
+    name: Orivanta CI required
+    if: always()
+    needs: [prepare, preflight-tests, preflight-ts-windows, build]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Require all CI jobs
+        env:
+          PREPARE: ${{ needs.prepare.result }}
+          TESTS: ${{ needs.preflight-tests.result }}
+          WINDOWS: ${{ needs.preflight-ts-windows.result }}
+          BUILD: ${{ needs.build.result }}
+        run: |
+          test "$PREPARE" = success
+          test "$TESTS" = success
+          test "$WINDOWS" = success
+          test "$BUILD" = success

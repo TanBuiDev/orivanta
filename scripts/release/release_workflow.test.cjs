@@ -3,12 +3,16 @@ const fs = require("node:fs");
 const os = require("node:os");
 const path = require("node:path");
 const crypto = require("node:crypto");
-const { spawnSync } = require("node:child_process");
+const { execFileSync, spawnSync } = require("node:child_process");
 const test = require("node:test");
 
-const workflowPath = path.join(__dirname, "..", "..", ".github", "workflows", "release.yml");
-const workflow = fs.readFileSync(workflowPath, "utf8");
 const repoRoot = path.resolve(__dirname, "../..");
+// Publishing stays off in Orivanta. Test the reusable artifact helpers against
+// the upstream workflow pinned in UPSTREAM_HISTORY.md.
+const workflow = execFileSync(
+  "git", ["show", "c004bf71be250cc2536fc91ef90638837f0013a0:.github/workflows/release.yml"],
+  { cwd: repoRoot, encoding: "utf8" },
+);
 const bash = process.platform === "win32"
   ? path.join(process.env.ProgramFiles, "Git", "bin", "bash.exe")
   : "bash";
@@ -135,7 +139,7 @@ test("Universal consumes this run's verified thin inputs and does not recompile"
 });
 
 test("trusted main CI and release jobs share caches, with correct platform separation", () => {
-  const ci = fs.readFileSync(path.join(__dirname, "../../.github/workflows/build-matrix.yml"), "utf8");
+  const ci = fs.readFileSync(path.join(__dirname, "../../.github/workflows/ci.yml"), "utf8");
   const cache = fs.readFileSync(path.join(__dirname, "../../.github/actions/host-build-cache/action.yml"), "utf8");
   assert.match(ci, /push:\s+branches:[\s\S]*?- "main"/);
   assert.match(ci, /uses: \.\/.github\/actions\/host-build-cache\s+with:\s+target: \$\{\{ matrix.cache_target \}\}/);

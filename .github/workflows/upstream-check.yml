@@ -1,0 +1,25 @@
+name: Upstream check
+
+on:
+  schedule:
+    - cron: '17 1 * * 1'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  report:
+    name: Report upstream changes
+    if: github.ref_name == github.event.repository.default_branch
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Compare upstream history and releases
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: bash scripts/custom/upstream-report.sh HEAD >> "$GITHUB_STEP_SUMMARY"
