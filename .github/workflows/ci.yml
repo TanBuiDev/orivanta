@@ -257,6 +257,8 @@ jobs:
           cargo test --locked quick_config_catalog_only_context_preservation --lib
           cargo test --locked claude_desktop_gateway --lib
           cargo test --locked external_import --lib
+          cargo test --locked backup_storage --lib -- --test-threads=1
+          cargo test --locked codex_session_visibility --lib -- --test-threads=1
 
       - name: "🧪 Test core Rust library"
         if: matrix.platform == 'ubuntu-22.04'
