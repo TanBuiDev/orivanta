@@ -1,0 +1,19 @@
+{
+  "common": {
+    "appName": "Orivanta",
+    "shared": {
+      "externalImport": {
+        "checkUpdate": "View Orivanta releases"
+      }
+    }
+  },
+  "settings": {
+    "about": {
+      "appName": "Orivanta",
+      "slogan": "Personal AI Workspace Manager",
+      "checkUpdate": "View releases",
+      "viewReleaseHistory": "Cockpit Tools release notes",
+      "releaseHistoryTitle": "Cockpit Tools release notes"
+    }
+  }
+}

@@ -45,7 +45,7 @@ function setup(options: { missing?: boolean; fail?: boolean; failAfterCommit?: b
     '../utils/codexSubscriptionSync': { mergeCodexSubscriptionUpdate },
   };
   const source = readFileSync(new URL('./useCodexAccountStore.ts', import.meta.url), 'utf8')
-    .replace('import.meta.env.VITE_COCKPIT_TOOLS_PROFILE', "''");
+    .replace('import.meta.env.VITE_ORIVANTA_PROFILE', "''");
   const compiled = ts.transpileModule(source, { compilerOptions: { module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2022 } }).outputText;
   const exports: any = {};
   const require = createRequire(import.meta.url);

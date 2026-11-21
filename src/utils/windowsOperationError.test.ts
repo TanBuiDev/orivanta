@@ -58,7 +58,7 @@ const STORE_LAUNCH_ERROR = [
   "launch_path_exists=true; ",
   "registered_path=C:\\Program Files\\WindowsApps\\OpenAI.Codex_26.908.4834.0_x64__2p2nqsd0c76g0\\app\\ChatGPT.exe; ",
   "path_matches_registered=false; ",
-  "codex_home=C:\\Users\\me\\.antigravity_cockpit\\instances\\codex\\abc",
+  "codex_home=C:\\Users\\me\\.orivanta_legacy\\instances\\codex\\abc",
 ].join("");
 
 test("parses the Codex Store launch-blocked error as a repairable case", () => {

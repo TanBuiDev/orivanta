@@ -1,3 +1,4 @@
+import { formatBudgetUsd } from '../utils/codexKeyBudget';
 import assert from 'node:assert/strict';
 import test from 'node:test';
 import { createElement } from 'react';
@@ -180,7 +181,7 @@ test('remote Cockpit cards keep only three daily fields and move budget and warn
   }
   const { CodexRemoteServiceDetails }=await import('../components/codex/CodexRemoteServiceDetails');
   const details=renderToStaticMarkup(createElement(CodexRemoteServiceDetails,{state:{loading:false,summary},baseUrl:'http://gateway.test/v1',apiKey:'private-key',t}));
-  assert.ok(details.includes('$15.00') && details.includes('$20.00'));
+  assert.ok(details.includes(formatBudgetUsd(15_000_000)) && details.includes(formatBudgetUsd(20_000_000)));
   assert.ok(details.includes('common.apiBudget.accountingNote') && details.includes('codex.localAccess.requestLogTitle'));
   assert.ok(!details.includes('private-key'));
 });

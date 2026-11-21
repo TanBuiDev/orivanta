@@ -101,7 +101,7 @@ export function SettingsWebdavSyncSection() {
   const [username, setUsername] = useState('');
   const [passwordInput, setPasswordInput] = useState('');
   const [clearPassword, setClearPassword] = useState(false);
-  const [remoteDir, setRemoteDir] = useState('cockpit-tools');
+  const [remoteDir, setRemoteDir] = useState('orivanta');
   const [retentionInput, setRetentionInput] = useState('15');
   const [remoteFiles, setRemoteFiles] = useState<WebdavBackupFileEntry[]>([]);
   const [showAllRemote, setShowAllRemote] = useState(false);

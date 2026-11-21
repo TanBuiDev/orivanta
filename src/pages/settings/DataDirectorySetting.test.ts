@@ -9,7 +9,7 @@ function nodes(value: any): any[] {
 }
 
 async function harness(activeCustomPath: string | null = null) {
-  const currentPath = activeCustomPath ?? 'C:\\Users\\fixture\\.cockpit_tools';
+  const currentPath = activeCustomPath ?? 'C:\\Users\\fixture\\.orivanta';
   const calls: (string | null)[] = [];
   let choice: string | null = null;
   let saveError: string | null = null;

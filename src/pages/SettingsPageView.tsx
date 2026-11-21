@@ -7,8 +7,9 @@ import { AntigravityMenuBarQuotaSelect } from '../components/AntigravityMenuBarQ
 import { CodexProxyDirectHosts } from '../components/codex/CodexProxyDirectHosts';
 import { SingleSelectDropdown } from '../components/SingleSelectDropdown';
 import './settings/Settings.css';
-import { Github, User, Rocket, Save, AlertCircle, RefreshCw, Heart, MessageSquare, FileText, Download, X } from 'lucide-react';
+import { Github, User, Save, AlertCircle, RefreshCw, Heart, MessageSquare, FileText, Download, X } from 'lucide-react';
 import type { MenuBarQuotaPlatform, useSettingsPageController } from "./SettingsPage";
+import { APP_UPDATER_ENABLED, ORIVANTA_RELEASES_URL, ORIVANTA_REPOSITORY_URL } from '../custom/brand';
 import { SettingsGeneralPanel } from "./SettingsGeneralPanel";
 
 
@@ -420,21 +421,23 @@ export function SettingsPageView(props: SettingsPageViewProps) {
         {activeTab === 'about' && (
           <div className="about-container">
             <div className="about-logo-section">
-              <div
+              <button
+                type="button"
+                aria-label={t('settings.about.appName')}
                 className={`app-icon-squircle${showUnlockFireworks ? ' unlock-fireworks-active' : ''}`}
                 onClick={handleAboutAvatarTap}
                 onMouseDown={(event) => event.preventDefault()}
               >
-                <Rocket size={40} />
-              </div>
+                <img className="orivanta-mark" src="/orivanta.png" alt="" />
+              </button>
               <div className="app-info">
                 <h2>{t('settings.about.appName')}</h2>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                <div className="orivanta-about-actions">
                   <div className="version-tag">{appVersion}</div>
                   <button 
                     className="btn btn-sm btn-ghost"
-                    onClick={handleCheckUpdate}
-                    disabled={updateChecking}
+                    onClick={() => (APP_UPDATER_ENABLED ? handleCheckUpdate() : openLink(ORIVANTA_RELEASES_URL))}
+                    disabled={APP_UPDATER_ENABLED && updateChecking}
                     style={{ 
                       fontSize: '12px', 
                       padding: '4px 10px',
@@ -498,7 +501,7 @@ export function SettingsPageView(props: SettingsPageViewProps) {
                 <p>{t('settings.about.sponsorDesc', 'Donate')}</p>
               </button>
 
-              <button className="credit-item" onClick={() => openLink('https://github.com/jlcodes99/cockpit-tools/issues')}>
+              <button className="credit-item" onClick={() => openLink(`${ORIVANTA_REPOSITORY_URL}/issues`)}>
                 <div className="credit-icon" style={{ color: '#3b82f6' }}><MessageSquare size={24} /></div>
                 <h3>{t('settings.about.feedback', '意见反馈')}</h3>
                 <p>{t('settings.about.feedbackDesc', 'Issues')}</p>
@@ -657,7 +660,7 @@ export function SettingsPageView(props: SettingsPageViewProps) {
                         {item.date ? (
                           <span className="settings-release-history-date">{item.date}</span>
                         ) : null}
-                        <button
+                        {APP_UPDATER_ENABLED && <button
                           className="settings-release-history-download-btn"
                           onClick={() => {
                             void handleDownloadReleaseVersion(item.version);
@@ -666,7 +669,7 @@ export function SettingsPageView(props: SettingsPageViewProps) {
                         >
                           <Download size={12} />
                           {t('settings.about.downloadThisVersion', '下载此版本')}
-                        </button>
+                        </button>}
                       </div>
                     </div>
                     <div className="settings-release-history-sections">

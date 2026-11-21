@@ -1,5 +1,8 @@
 import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
+import { ORIVANTA_NAME } from '../custom/brand';
+import orivantaEn from './orivanta/en.json';
+import orivantaVi from './orivanta/vi.json';
 import enResources from '../locales/en.json';
 import zhCnResources from '../locales/zh-CN.json';
 
@@ -54,6 +57,18 @@ const localeLoaders: Record<string, () => Promise<LocaleModule>> = {
   id: () => import('../locales/id.json'),
 };
 
+const orivantaBrand = {
+  common: { appName: ORIVANTA_NAME },
+  settings: { about: { appName: ORIVANTA_NAME } },
+};
+
+function applyOrivantaResources(language: string) {
+  i18n.addResourceBundle(language, 'translation', orivantaBrand, true, true);
+  if (language === 'en' || language === 'vi') {
+    i18n.addResourceBundle(language, 'translation', language === 'vi' ? orivantaVi : orivantaEn, true, true);
+  }
+}
+
 const loadedLanguages = new Set<string>();
 let initPromise: Promise<void> | null = null;
 let i18nBootstrapped = false;
@@ -94,15 +109,16 @@ async function ensureLanguageResources(lang: string): Promise<string> {
   }
   const module = await loader();
   i18n.addResourceBundle(resolved, 'translation', module.default, true, true);
+  applyOrivantaResources(resolved);
   loadedLanguages.add(resolved);
   return resolved;
 }
 
 function getSavedLanguage(): string {
   try {
-    return resolveSupportedLanguage(localStorage.getItem('app-language') || 'en');
+    return resolveSupportedLanguage(localStorage.getItem('app-language') || 'vi');
   } catch {
-    return 'en';
+    return 'vi';
   }
 }
 
@@ -137,6 +153,14 @@ function bootstrapI18n(savedLanguage: string): string {
       },
     });
 
+  applyOrivantaResources('en');
+  applyOrivantaResources('zh-cn');
+  if (typeof document !== 'undefined') {
+    document.documentElement.lang = bootstrapLanguage;
+    i18n.on('languageChanged', (language) => {
+      document.documentElement.lang = language;
+    });
+  }
   loadedLanguages.add('en');
   loadedLanguages.add('zh-cn');
   i18nBootstrapped = true;
@@ -188,7 +212,7 @@ export async function changeLanguage(lang: string): Promise<void> {
  * 获取当前语言
  */
 export function getCurrentLanguage(): string {
-  return normalizeLanguage(i18n.language || 'zh-CN');
+  return normalizeLanguage(i18n.language || 'vi');
 }
 
 export default i18n;

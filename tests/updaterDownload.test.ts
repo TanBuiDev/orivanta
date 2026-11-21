@@ -45,6 +45,7 @@ function candidate(version = '1.3.70') {
 type Candidate = ReturnType<typeof candidate>;
 
 function harness(options: {
+  enabled?: boolean;
   check?: () => Promise<Candidate | null>;
   settings?: () => Promise<{ auto_install: boolean }>;
   prepareInfo?: () => Promise<unknown>;
@@ -70,6 +71,7 @@ function harness(options: {
   const context: Record<string, any> = {
     exports, ...refs, ...retry, createUpdaterDownloadProgress,
     UPDATE_DOWNLOAD_RETRY_DELAYS_MS: [0], UPDATE_CHECK_RETRY_DELAYS_MS: [],
+    APP_UPDATER_ENABLED: options.enabled ?? true,
     updateRuntimeInfoLoaded: true, isLinuxManagedUpdate: false, performance: { now: () => 0 },
     updatePromptPolicyRef: { current: { enabled: true, revision: 0 } },
     console: { log() {}, warn() {}, error() {} },
@@ -175,6 +177,14 @@ test('install and relaunch failures show the error before recovering the API lis
     recovery.resolve();
     await rejected;
   }
+});
+
+test('Orivanta does not schedule update checks or read update settings', async () => {
+  const h = harness({ enabled: false });
+  assert.equal(h.background(), undefined);
+  await settlePromises();
+  assert.equal(h.settingsReads(), 0);
+  assert.equal(h.checks(), 0);
 });
 
 test('manual download followed by the hourly check keeps one task and real progress', async () => {

@@ -32,7 +32,7 @@ const reconcileAccountUpdates = (account: CodexAccount) => mergeCodexSubscriptio
   subscriptionUpdates.get(account.id),
 );
 
-const APP_PROFILE = (import.meta.env.VITE_COCKPIT_TOOLS_PROFILE || '').trim();
+const APP_PROFILE = (import.meta.env.VITE_ORIVANTA_PROFILE || '').trim();
 const STORAGE_PROFILE_SUFFIX = APP_PROFILE && APP_PROFILE !== 'prod' ? `.${APP_PROFILE}` : '';
 const CODEX_ACCOUNTS_CACHE_KEY = `agtools.codex.accounts.cache${STORAGE_PROFILE_SUFFIX}`;
 const CODEX_CURRENT_ACCOUNT_CACHE_KEY = `agtools.codex.accounts.current${STORAGE_PROFILE_SUFFIX}`;

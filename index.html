@@ -1,10 +1,11 @@
 <!doctype html>
-<html lang="zh-CN">
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <link rel="icon" type="image/png" href="/orivanta.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Cockpit Tools</title>
+    <meta name="description" content="Orivanta — Personal AI Workspace Manager" />
+    <title>Orivanta</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -84,7 +85,7 @@
         height: 100%;
         width: 28%;
         border-radius: inherit;
-        background: #38bdf8;
+        background: #70e5cd;
       }
 
       .app-boot-progress[data-mode="indeterminate"] .app-boot-bar {
@@ -134,8 +135,13 @@
         var failure = document.getElementById('app-boot-failure');
         if (!splash || !failure || !failure.hidden) return;
         var retry = failure.querySelector('button');
-        if (/^zh\b/i.test(navigator.language)) {
-          failure.querySelector('p').textContent = 'Cockpit Tools 启动失败。';
+        var language = navigator.language;
+        try { language = localStorage.getItem('app-language') || language; } catch {}
+        if (/^vi\b/i.test(language)) {
+          failure.querySelector('p').textContent = 'Không thể khởi động Orivanta.';
+          retry.textContent = 'Tải lại';
+        } else if (/^zh\b/i.test(language)) {
+          failure.querySelector('p').textContent = 'Orivanta 启动失败。';
           retry.textContent = '重新加载';
         }
         splash.querySelector('.app-boot-progress').hidden = true;
@@ -158,12 +164,12 @@
 
   <body>
     <div id="app-boot-splash" aria-hidden="true">
-      <div class="app-boot-mark">Cockpit Tools</div>
+      <div class="app-boot-mark">Orivanta</div>
       <div class="app-boot-progress" data-mode="indeterminate">
         <div class="app-boot-bar" id="app-boot-bar"></div>
       </div>
       <div id="app-boot-failure" hidden>
-        <p role="alert">Cockpit Tools failed to start.</p>
+        <p role="alert">Orivanta failed to start.</p>
         <button type="button">Reload</button>
       </div>
     </div>

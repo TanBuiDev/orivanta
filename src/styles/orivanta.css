@@ -1,0 +1,77 @@
+:root {
+  --orivanta-focus: #08796b;
+  --orivanta-focus-offset: 3px;
+  --orivanta-reading-line-height: 1.5;
+}
+
+:root[data-theme="dark"] {
+  --orivanta-focus: #70e5cd;
+}
+
+:root:is(:not([data-theme-color]), [data-theme-color="default"]) {
+  --primary: #087467;
+  --primary-hover: #065c52;
+  --primary-light: rgba(8, 116, 103, 0.12);
+  --accent: #168a7c;
+  --gradient-primary: linear-gradient(135deg, #10535f, #08695c);
+}
+
+:root:is(:not([data-theme-color]), [data-theme-color="default"])[data-theme="dark"] {
+  --primary: #57cdb7;
+  --primary-hover: #78e5ce;
+  --primary-light: rgba(87, 205, 183, 0.15);
+  --accent: #68d6c0;
+  --gradient-primary: linear-gradient(135deg, #10535f, #0b5148);
+}
+
+:root:is(:not([data-theme-color]), [data-theme-color="default"])[data-theme="dark"] .app-container .btn-primary {
+  background: #12675c;
+  color: #fff;
+}
+
+:root:is(:not([data-theme-color]), [data-theme-color="default"])[data-theme="dark"] .app-container .btn-primary:hover:not(:disabled) {
+  background: #18776a;
+}
+
+.app-container :is(button, a, input, select, textarea, [tabindex]):focus-visible {
+  outline: 2px solid var(--orivanta-focus);
+  outline-offset: var(--orivanta-focus-offset);
+}
+
+.app-container :is(input, select, textarea):focus-visible {
+  outline-offset: 1px;
+}
+
+.app-container .brand-logo,
+.app-container .app-icon-squircle {
+  border: 0;
+  padding: 0;
+  background: transparent;
+  cursor: pointer;
+}
+
+.orivanta-mark {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.app-container :is(.row-desc, .modal-body, .account-detail, .mini-quota-meta-row) {
+  line-height: var(--orivanta-reading-line-height);
+}
+
+.app-container :is(.dashboard-page, .quota-list, table, .version-tag) {
+  font-variant-numeric: tabular-nums;
+}
+
+.app-container .side-nav-brand-title {
+  letter-spacing: -0.025em;
+}
+
+.orivanta-about-actions {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+}

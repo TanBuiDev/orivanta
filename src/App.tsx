@@ -69,6 +69,7 @@ import { antigravityAppPathTarget, getAntigravityRuntimeTarget, normalizeAntigra
 import { useTopRightAdStore } from './stores/useTopRightAdStore';
 import { useSponsorStore } from './stores/useSponsorStore';
 import { useRemoteConfigStore } from './stores/useRemoteConfigStore';
+import { APP_UPDATER_ENABLED, ORIVANTA_RELEASES_URL } from './custom/brand';
 import type { UpdateCheckResult, UpdateInfo } from './components/UpdateNotification';
 import type {
   VersionJumpInfo, UpdateRuntimeInfo, UpdateCheckSource,
@@ -955,6 +956,10 @@ function MainApp() {
             label: t('common.shared.externalImport.checkUpdate', '检查更新'),
             variant: 'primary',
             onClick: () => {
+              if (!APP_UPDATER_ENABLED) {
+                void import('@tauri-apps/plugin-opener').then(({ openUrl }) => openUrl(ORIVANTA_RELEASES_URL));
+                return;
+              }
               window.dispatchEvent(
                 new CustomEvent('update-check-requested', {
                   detail: { source: 'manual' satisfies UpdateCheckSource },
@@ -2295,7 +2300,7 @@ function MainApp() {
 
   // Check for updates on startup
   useEffect(() => {
-    if (!updateRuntimeInfoLoaded) {
+    if (!APP_UPDATER_ENABLED || !updateRuntimeInfoLoaded) {
       return;
     }
 
@@ -2613,6 +2618,7 @@ function MainApp() {
 
   // Version jump detection (post-update changelog)
   useEffect(() => {
+    if (!APP_UPDATER_ENABLED) return;
     const detectVersionJump = async () => {
       const versionJumpStartedAt = performance.now();
       try {
@@ -2865,6 +2871,7 @@ function MainApp() {
   }, []);
 
   useEffect(() => {
+    if (!APP_UPDATER_ENABLED) return;
     const handleUpdateRequest = (event: Event) => {
       const detail = (event as CustomEvent<{ source?: UpdateCheckSource }>).detail;
       // Automatic checks use the background flow and its local-preference gate.

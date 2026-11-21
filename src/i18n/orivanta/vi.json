@@ -1,0 +1,116 @@
+{
+  "common": {
+    "search": "Tìm kiếm",
+    "open": "Mở",
+    "copy": "Sao chép",
+    "add": "Thêm",
+    "enable": "Bật",
+    "disable": "Tắt",
+    "none": "Không có",
+    "preview": "Xem trước",
+    "apiKeyAccount": "Tài khoản dùng khóa API",
+    "profileRestoreRecoveryFailed": "Không thể khôi phục phiên đăng nhập. Bản sao lưu vẫn còn tại {{detail}}.",
+    "quotaRefreshScheduler": {
+      "busy": "Có quá nhiều yêu cầu làm mới hạn mức. Vui lòng thử lại sau.",
+      "timeout": "Đã hết thời gian chờ làm mới hạn mức.",
+      "invalidAccountId": "Thiếu mã tài khoản."
+    },
+    "networkErrors": {
+      "upstream": "dịch vụ nguồn",
+      "localProxyUnavailable": "Không thể kết nối với proxy cục bộ “{{proxy}}”. Hãy kiểm tra xem proxy có đang chạy hay không.",
+      "directTimeout": "Đã hết thời gian chờ kết nối với {{target}}. Hãy kiểm tra mạng và thử lại."
+    },
+    "shared": {
+      "externalImport": {
+        "checkUpdate": "Xem các bản phát hành Orivanta"
+      }
+    }
+  },
+  "nav": {
+    "wakeup": "Tác vụ kích hoạt",
+    "windsurf": "Windsurf",
+    "dashboard": "Tổng quan",
+    "morePlatforms": "Nền tảng khác",
+    "instances": "Phiên bản chạy",
+    "zed": "Zed",
+    "apiRelay": "Chuyển tiếp API"
+  },
+  "settings": {
+    "tabs": {
+      "network": "Mạng"
+    },
+    "about": {
+      "slogan": "Quản lý không gian làm việc AI cá nhân",
+      "author": "Tác giả Cockpit Tools",
+      "github": "Mã nguồn Cockpit Tools",
+      "feedback": "Góp ý về Orivanta",
+      "feedbackDesc": "Báo lỗi hoặc đề xuất",
+      "checkUpdate": "Xem bản phát hành",
+      "checking": "Đang kiểm tra…",
+      "upToDate": "Bạn đang dùng bản mới nhất.",
+      "newVersion": "Đã có phiên bản v{{version}}",
+      "viewReleaseHistory": "Ghi chú phát hành Cockpit Tools",
+      "releaseHistoryTitle": "Ghi chú phát hành Cockpit Tools",
+      "releaseHistorySectionRemoved": "Đã loại bỏ"
+    }
+  },
+  "accounts": {
+    "search": "Tìm tài khoản…",
+    "switchLogin": "Chuyển tài khoản",
+    "copyToken": "Sao chép token",
+    "confirmDelete": "Xóa tài khoản {{email}}?",
+    "refreshAllFailed": "Không thể làm mới tất cả tài khoản: {{error}}",
+    "refreshFailed": "Không thể làm mới tài khoản: {{error}}",
+    "refreshSuccess": "Đã làm mới tài khoản.",
+    "switchFailed": "Không thể chuyển tài khoản: {{error}}",
+    "switchSuccess": "Đã chuyển tài khoản.",
+    "lastSwitchTime": "Lần chuyển gần nhất",
+    "refreshTime": "Lần làm mới gần nhất",
+    "token": {
+      "refreshingQuota": "Đang làm mới hạn mức ({{done}}/{{total}}). Bạn có thể đóng hộp thoại này.",
+      "quotaRefreshDone": "Đã làm mới hạn mức.",
+      "importPartial": "Đã nhập {{success}} tài khoản. Không thể nhập {{fail}} tài khoản."
+    },
+    "oauth": {
+      "authorizing": "Đang chờ ủy quyền OAuth…",
+      "failed": "Không thể hoàn tất ủy quyền OAuth: {{error}}",
+      "hint": "Mở liên kết trong trình duyệt để hoàn tất ủy quyền bằng Google OAuth.",
+      "start": "Bắt đầu ủy quyền OAuth",
+      "continue": "Tiếp tục sau khi ủy quyền",
+      "linkLabel": "Liên kết ủy quyền"
+    }
+  },
+  "dashboard": {
+    "title": "Tổng quan tài khoản",
+    "summary": {
+      "title": "Tình trạng tài khoản",
+      "desc": "Theo dõi tài khoản và hạn mức của Antigravity IDE và Codex."
+    },
+    "panels": {
+      "planDistribution": "Phân bố gói đăng ký",
+      "emptyDesc": "Thêm tài khoản để xem hạn mức và trạng thái."
+    },
+    "quota": {
+      "remaining": "Còn {{value}}% hạn mức",
+      "codex": "5 giờ: {{hourly}}% · Tuần: {{weekly}}%"
+    },
+    "actions": {
+      "refresh": "Làm mới dữ liệu",
+      "viewAll": "Xem tất cả tài khoản"
+    },
+    "switch": "Chuyển tài khoản",
+    "noRecommendation": "Chưa có tài khoản phù hợp hơn."
+  },
+  "update_notification": {
+    "installSuccess": "Đã cài đặt bản cập nhật. Đang khởi động lại…",
+    "autoUpdateFailed": "Không thể cập nhật tự động. Bạn có thể tải bản cập nhật thủ công.",
+    "checkRetrying": "Kết nối mạng gián đoạn. Đang kiểm tra lại ({{attempt}}/{{total}})…",
+    "downloadRetrying": "Kết nối mạng gián đoạn. Đang tải lại ({{attempt}}/{{total}})…"
+  },
+  "error": {
+    "fileCorrupted": {
+      "description": "Không thể đọc nội dung tệp {{fileName}} vì tệp bị hỏng.",
+      "openFolderFailed": "Không thể mở thư mục: {{error}}"
+    }
+  }
+}

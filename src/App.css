@@ -4,6 +4,7 @@
 @import './components/QuickSettingsPopover.css';
 @import './styles/settings-shared.css';
 @import './styles/pages.css';
+@import './styles/orivanta.css';
 
 .quota-alert-modal-content {
   display: flex;

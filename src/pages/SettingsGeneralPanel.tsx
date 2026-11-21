@@ -1,3 +1,4 @@
+import { APP_UPDATER_ENABLED } from '../custom/brand';
 import { LaunchPathSettingsButton } from '../components/LaunchPathSettingsButton';
 import { MenuBarLeftClickSetting } from '../components/MenuBarLeftClickSetting';
 import { invoke } from '@tauri-apps/api/core';
@@ -649,6 +650,7 @@ export function SettingsGeneralPanel(props: SettingsPageViewProps) {
                 </div>
               </div>
 
+              {APP_UPDATER_ENABLED && <>
               <div className="settings-row">
                 <div className="row-label">
                   <div className="row-title">{t('settings.general.autoUpdate')}</div>
@@ -692,6 +694,7 @@ export function SettingsGeneralPanel(props: SettingsPageViewProps) {
                   />
                 </div>
               </div>
+              </>}
 
               <div className="settings-row">
                 <div className="row-label">

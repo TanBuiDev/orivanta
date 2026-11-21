@@ -1,4 +1,4 @@
-import { Settings, Rocket, GaugeCircle, LayoutGrid, SlidersHorizontal, FileText, ChevronDown, PanelLeftClose, PanelLeftOpen, ShieldCheck } from 'lucide-react';
+import { Settings, GaugeCircle, LayoutGrid, SlidersHorizontal, FileText, ChevronDown, PanelLeftClose, PanelLeftOpen, ShieldCheck } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { useState, useRef, useCallback, useEffect, useLayoutEffect, useMemo, type CSSProperties } from 'react';
 import { createPortal } from 'react-dom';
@@ -24,6 +24,7 @@ import { useGlobalModal } from '../../hooks/useGlobalModal';
 import { getPlatformLabel, renderPlatformIcon } from '../../utils/platformMeta';
 import { useRemoteConfigStore } from '../../stores/useRemoteConfigStore';
 import { useApiKeyFunCampaign } from '../../hooks/useApiKeyFunCampaign';
+import { ORIVANTA_NAME } from '../../custom/brand';
 import './SideNavCampaign.css';
 
 interface SideNavProps {
@@ -85,7 +86,7 @@ const PAGE_PLATFORM_MAP: Partial<Record<Page, PlatformId>> = {
 };
 
 const APP_DISPLAY_NAME =
-  import.meta.env.VITE_COCKPIT_TOOLS_PROFILE === 'dev' ? 'Cockpit Tools Dev' : 'Cockpit Tools';
+  import.meta.env.VITE_ORIVANTA_PROFILE === 'dev' ? `${ORIVANTA_NAME} Dev` : ORIVANTA_NAME;
 
 const CLASSIC_NAV_MIN_SCALE = 0.5;
 const CLASSIC_NAV_SCALE_EPSILON = 0.004;
@@ -189,7 +190,7 @@ export function SideNav({
   const brandRef = useRef<HTMLDivElement>(null);
   const navItemsRef = useRef<HTMLDivElement>(null);
   const bottomActionsRef = useRef<HTMLDivElement>(null);
-  const logoRef = useRef<HTMLDivElement>(null);
+  const logoRef = useRef<HTMLButtonElement>(null);
   const morePopoverRef = useRef<HTMLDivElement>(null);
   const moreButtonRef = useRef<HTMLButtonElement>(null);
 
@@ -590,7 +591,6 @@ export function SideNav({
   }, [isClassicLayout, recalculateClassicAdaptiveScale]);
 
   const classicMainIconSize = Math.max(14, Math.round(20 * classicAdaptiveScale));
-  const classicBrandLogoIconSize = Math.max(14, Math.round(20 * classicAdaptiveScale));
   const classicHandleIconSize = Math.max(12, Math.round(16 * classicAdaptiveScale));
 
   const classicScaleStyle = isClassicLayout
@@ -914,18 +914,20 @@ export function SideNav({
 
       <div className="nav-brand" ref={brandRef} style={{ position: 'relative', zIndex: 10 }}>
         <div className="side-nav-brand-main">
-          <div
+          <button
+            type="button"
             ref={logoRef}
+            aria-label={hasBreakoutSession ? t('breakout.resumeGameNav', '继续游戏') : APP_DISPLAY_NAME}
             className={`brand-logo rocket-easter-egg${hasBreakoutSession ? ' rocket-easter-egg-active' : ''}`}
             onClick={handleLogoClick}
             title={hasBreakoutSession ? t('breakout.resumeGameNav', '继续游戏') : undefined}
           >
-            <Rocket size={isClassicLayout ? classicBrandLogoIconSize : 20} />
+            <img className="orivanta-mark" src="/orivanta.png" alt="" />
             {hasBreakoutSession && <span className="rocket-session-indicator" aria-hidden="true" />}
             {!hasBreakoutSession && easterEggClickCount > 0 && (
               <span className="rocket-click-count">{easterEggClickCount}</span>
             )}
-          </div>
+          </button>
 
           {isClassicLayout && !isClassicCollapsed && (
             <div className="side-nav-brand-title">{APP_DISPLAY_NAME}</div>
