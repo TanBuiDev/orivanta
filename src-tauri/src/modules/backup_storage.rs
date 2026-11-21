@@ -1092,45 +1092,45 @@ fn legacy_backup_roots() -> Vec<(String, PathBuf)> {
         {
             roots.push((
                 "codebuddy".to_string(),
-                home.join("Library/Application Support/CodeBuddyExtension/Backups/CockpitTools"),
+                home.join("Library/Application Support/CodeBuddyExtension/Backups/Orivanta"),
             ));
             roots.push((
                 "workbuddy".to_string(),
-                home.join(".workbuddy/Backups/CockpitTools"),
+                home.join(".workbuddy/Backups/Orivanta"),
             ));
             roots.push((
                 "minimaxcode".to_string(),
-                home.join(".minimax/Backups/CockpitTools"),
+                home.join(".minimax/Backups/Orivanta"),
             ));
         }
         #[cfg(target_os = "windows")]
         {
             roots.push((
                 "codebuddy".to_string(),
-                home.join("AppData/Local/CodeBuddyExtension/Backups/CockpitTools"),
+                home.join("AppData/Local/CodeBuddyExtension/Backups/Orivanta"),
             ));
             roots.push((
                 "workbuddy".to_string(),
-                home.join(".workbuddy/Backups/CockpitTools"),
+                home.join(".workbuddy/Backups/Orivanta"),
             ));
             roots.push((
                 "minimaxcode".to_string(),
-                home.join(".minimax/Backups/CockpitTools"),
+                home.join(".minimax/Backups/Orivanta"),
             ));
         }
         #[cfg(target_os = "linux")]
         {
             roots.push((
                 "codebuddy".to_string(),
-                home.join(".local/share/CodeBuddyExtension/Backups/CockpitTools"),
+                home.join(".local/share/CodeBuddyExtension/Backups/Orivanta"),
             ));
             roots.push((
                 "workbuddy".to_string(),
-                home.join(".workbuddy/Backups/CockpitTools"),
+                home.join(".workbuddy/Backups/Orivanta"),
             ));
             roots.push((
                 "minimaxcode".to_string(),
-                home.join(".minimax/Backups/CockpitTools"),
+                home.join(".minimax/Backups/Orivanta"),
             ));
         }
     }
@@ -1149,6 +1149,8 @@ fn legacy_codex_instance_backup_dirs() -> Vec<(String, PathBuf)> {
     }
     instance_dirs.push(codex_account::get_codex_home());
 
+    use crate::modules::codex_session_visibility::SESSION_VISIBILITY_REPAIR_BACKUP_PREFIX;
+
     let mut seen_dirs = HashSet::new();
     let mut backups = Vec::new();
     for instance_dir in instance_dirs {
@@ -1165,7 +1167,7 @@ fn legacy_codex_instance_backup_dirs() -> Vec<(String, PathBuf)> {
             let Some(name) = path.file_name().and_then(|value| value.to_str()) else {
                 continue;
             };
-            if name.starts_with("backup-") && path.is_dir() {
+            if name.starts_with(SESSION_VISIBILITY_REPAIR_BACKUP_PREFIX) && path.is_dir() {
                 backups.push((scope.clone(), path));
             }
         }
@@ -1748,8 +1750,8 @@ mod tests {
         let root = make_temp_dir("prune-codex-session-repair");
         let scope = root.join("behavior/codex/profile");
         let repairs = [
-            "backup-20200101-000000-session-visibility-repair",
-            "backup-20200102-000000-unique-session-visibility-repair",
+            "orivanta-backup-20200101-000000-session-visibility-repair",
+            "orivanta-backup-20200102-000000-unique-session-visibility-repair",
         ];
         for name in repairs.into_iter().chain(["first-instance-thread-sync", "second-instance-thread-sync"]) {
             let backup = scope.join(name);

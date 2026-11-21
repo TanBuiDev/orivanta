@@ -12,7 +12,7 @@ use uuid::Uuid;
 
 use crate::modules::{config, logger};
 
-const SENTRY_CLIENT: &str = "cockpit-tools/1.0";
+const SENTRY_CLIENT: &str = "orivanta/1.0";
 const PROFILE_ENV: &str = "ORIVANTA_PROFILE";
 const FRONTEND_READY_TIMEOUT_MS: u64 = 15_000;
 const SAME_EVENT_THROTTLE_MS: u128 = 60_000;
@@ -416,11 +416,9 @@ fn send_sentry_event(dsn: &SentryDsn, event: &Value) -> Result<(), String> {
 }
 
 fn current_dsn() -> Option<String> {
-    let runtime = std::env::var("COCKPIT_SENTRY_DSN")
+    let runtime = std::env::var("ORIVANTA_SENTRY_DSN")
         .ok()
-        .or_else(|| std::env::var("SENTRY_DSN").ok())
-        .or_else(|| option_env!("COCKPIT_SENTRY_DSN").map(ToString::to_string))
-        .or_else(|| option_env!("SENTRY_DSN").map(ToString::to_string))
+        .or_else(|| option_env!("ORIVANTA_SENTRY_DSN").map(ToString::to_string))
         .unwrap_or_default();
     let trimmed = runtime.trim();
     if trimmed.is_empty()

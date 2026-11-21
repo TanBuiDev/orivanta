@@ -75,10 +75,10 @@ fn session_repair_preserves_legacy_and_managed_backups() {
     let fixture = VisibilityMtimeFixture::new();
     let old = fixture
         .dir
-        .join("backup-20200101-000000-session-visibility-repair");
+        .join("orivanta-backup-20200101-000000-session-visibility-repair");
     let newest = fixture
         .dir
-        .join("backup-20200102-000000-session-visibility-repair");
+        .join("orivanta-backup-20200102-000000-session-visibility-repair");
     fs::create_dir_all(&old).unwrap();
     fs::create_dir_all(&newest).unwrap();
     let scope = modules::backup_storage::scope_for_path(&fixture.dir);
@@ -112,7 +112,7 @@ fn session_repair_removes_only_the_failed_backup_attempt() {
     let provider_before = read_thread_provider(data_dir, "mtime-thread");
     let scope = modules::backup_storage::scope_for_path(data_dir);
     let previous = modules::backup_storage::behavior_backup_dir(
-        "codex", &scope, "backup-20200101-000000-session-visibility-repair",
+        "codex", &scope, "orivanta-backup-20200101-000000-session-visibility-repair",
     ).unwrap();
     fs::write(previous.join("manifest.json"), "previous backup").unwrap();
     let scope_dir = previous.parent().unwrap();

@@ -52,3 +52,11 @@ test('Vietnamese and English overrides preserve keys and interpolation', () => {
     }
   }
 });
+
+test('Rust parser and app-owned support storage avoid Cockpit Tools namespaces', () => {
+  const importSource = read('src-tauri/src/modules/external_import.rs');
+  assert.match(importSource, /matches!\(scheme, "orivanta" \| "orivanta-dev"\)/);
+  assert.doesNotMatch(read('src-tauri/src/modules/codex_ssh.rs'), /\.join\("cockpit-tools"\)/);
+  assert.doesNotMatch(read('src-tauri/src/modules/codex_device_restrictions.rs'), /\.join\("cockpit-tools-local"\)/);
+  assert.doesNotMatch(read('src-tauri/src/modules/backup_storage.rs'), /Backups\/CockpitTools/);
+});

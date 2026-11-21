@@ -75,3 +75,7 @@
   flex-wrap: wrap;
   gap: 8px;
 }
+
+.app-container .credit-item p {
+  color: var(--text-secondary);
+}
