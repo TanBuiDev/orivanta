@@ -340,7 +340,7 @@ fn legacy_hardcoded_instances_root_dir() -> Result<Option<PathBuf>, String> {
     #[cfg(target_os = "macos")]
     {
         let home = dirs::home_dir().ok_or("无法获取用户主目录")?;
-        return Ok(Some(home.join(".antigravity_cockpit/instances/codex")));
+        return Ok(Some(home.join(".orivanta_legacy/instances/codex")));
     }
 
     #[cfg(target_os = "windows")]
@@ -348,7 +348,7 @@ fn legacy_hardcoded_instances_root_dir() -> Result<Option<PathBuf>, String> {
         let appdata =
             std::env::var("APPDATA").map_err(|_| "无法获取 APPDATA 环境变量".to_string())?;
         return Ok(Some(
-            PathBuf::from(appdata).join(".antigravity_cockpit\\instances\\codex"),
+            PathBuf::from(appdata).join(".orivanta_legacy\\instances\\codex"),
         ));
     }
 

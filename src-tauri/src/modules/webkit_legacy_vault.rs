@@ -171,7 +171,7 @@ pub fn read(
     vault: LegacyVault,
 ) -> Result<Option<Vec<serde_json::Value>>, String> {
     #[cfg(target_os = "macos")]
-    if identifier == "com.jlcodes.cockpit-tools.dev" {
+    if identifier == "dev.tanbuidev.orivanta.dev" {
         let home = dirs::home_dir().ok_or("无法获取旧 WebView 的数据目录")?;
         let root = home
             .join("Library/WebKit")

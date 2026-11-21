@@ -132,7 +132,7 @@ fn safe_component(value: &str) -> String {
 pub fn default_backup_root_dir() -> Result<PathBuf, String> {
     #[cfg(test)]
     {
-        // 现有单元测试会并行修改 COCKPIT_TOOLS_TEST_DATA_DIR。行为备份路径
+        // 现有单元测试会并行修改 ORIVANTA_TEST_DATA_DIR。行为备份路径
         // 在测试态使用独立目录，避免一个测试清理另一个测试正在写入的 SQLite
         // 快照；正式构建仍保持默认数据目录下的 backups 行为。
         return Ok(
@@ -1503,8 +1503,8 @@ mod tests {
         fn new() -> Self {
             let root = make_temp_dir("directory-recovery");
             fs::write(root.join("broken-data"), b"original user data").unwrap();
-            let previous = std::env::var_os("COCKPIT_TOOLS_TEST_DATA_DIR");
-            std::env::set_var("COCKPIT_TOOLS_TEST_DATA_DIR", root.join("broken-data"));
+            let previous = std::env::var_os("ORIVANTA_TEST_DATA_DIR");
+            std::env::set_var("ORIVANTA_TEST_DATA_DIR", root.join("broken-data"));
             Self { root, previous }
         }
 
@@ -1516,9 +1516,9 @@ mod tests {
     impl Drop for RecoveryFixture {
         fn drop(&mut self) {
             if let Some(previous) = &self.previous {
-                std::env::set_var("COCKPIT_TOOLS_TEST_DATA_DIR", previous);
+                std::env::set_var("ORIVANTA_TEST_DATA_DIR", previous);
             } else {
-                std::env::remove_var("COCKPIT_TOOLS_TEST_DATA_DIR");
+                std::env::remove_var("ORIVANTA_TEST_DATA_DIR");
             }
             let _ = fs::remove_dir_all(&self.root);
         }

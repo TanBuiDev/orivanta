@@ -1,12 +1,12 @@
 {
   "$schema": "https://schema.tauri.app/config/2",
-  "productName": "Cockpit Tools Dev",
-  "identifier": "com.jlcodes.cockpit-tools.dev",
+  "productName": "Orivanta Dev",
+  "identifier": "dev.tanbuidev.orivanta.dev",
   "app": {
     "windows": [
       {
         "label": "main",
-        "title": "Cockpit Tools Dev",
+        "title": "Orivanta Dev",
         "width": 1280,
         "height": 800,
         "minWidth": 900,
@@ -19,7 +19,7 @@
       },
       {
         "label": "floating-card",
-        "title": "Cockpit Tools Dev",
+        "title": "Orivanta Dev",
         "create": false,
         "width": 250,
         "height": 290,
@@ -34,5 +34,14 @@
         "visible": false
       }
     ]
+  },
+  "plugins": {
+    "deep-link": {
+      "desktop": {
+        "schemes": [
+          "orivanta-dev"
+        ]
+      }
+    }
   }
 }

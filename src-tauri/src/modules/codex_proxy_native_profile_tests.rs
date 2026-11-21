@@ -12,10 +12,10 @@ impl Fixture {
         let root =
             std::env::temp_dir().join(format!("native-profile-test-{}", uuid::Uuid::new_v4()));
         std::fs::create_dir_all(root.join("resources")).unwrap();
-        let old = std::env::var_os("COCKPIT_TOOLS_TEST_DATA_DIR");
-        let old_data = std::env::var_os("COCKPIT_TOOLS_DATA_DIR");
-        std::env::set_var("COCKPIT_TOOLS_TEST_DATA_DIR", root.join("data"));
-        std::env::set_var("COCKPIT_TOOLS_DATA_DIR", root.join("data"));
+        let old = std::env::var_os("ORIVANTA_TEST_DATA_DIR");
+        let old_data = std::env::var_os("ORIVANTA_DATA_DIR");
+        std::env::set_var("ORIVANTA_TEST_DATA_DIR", root.join("data"));
+        std::env::set_var("ORIVANTA_DATA_DIR", root.join("data"));
         Self {
             root,
             old,
@@ -29,14 +29,14 @@ impl Fixture {
 impl Drop for Fixture {
     fn drop(&mut self) {
         if let Some(old) = &self.old {
-            std::env::set_var("COCKPIT_TOOLS_TEST_DATA_DIR", old);
+            std::env::set_var("ORIVANTA_TEST_DATA_DIR", old);
         } else {
-            std::env::remove_var("COCKPIT_TOOLS_TEST_DATA_DIR");
+            std::env::remove_var("ORIVANTA_TEST_DATA_DIR");
         }
         if let Some(old) = &self.old_data {
-            std::env::set_var("COCKPIT_TOOLS_DATA_DIR", old);
+            std::env::set_var("ORIVANTA_DATA_DIR", old);
         } else {
-            std::env::remove_var("COCKPIT_TOOLS_DATA_DIR");
+            std::env::remove_var("ORIVANTA_DATA_DIR");
         }
         let _ = std::fs::remove_dir_all(&self.root);
     }

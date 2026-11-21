@@ -202,7 +202,7 @@ fn run_isolated(root: &Path, test: &str, phase: &str) {
         .env(CHILD, phase)
         // The unoptimized scheduler and HTTP futures share this test thread.
         .env("RUST_MIN_STACK", "16777216")
-        .env("COCKPIT_TOOLS_DATA_DIR", root)
+        .env("ORIVANTA_DATA_DIR", root)
         .env("CODEX_HOME", codex_home)
         .arg("--exact")
         .arg(format!(

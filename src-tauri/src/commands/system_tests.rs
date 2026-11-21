@@ -21,7 +21,7 @@
             let status = std::process::Command::new(std::env::current_exe().unwrap())
                 .args(["--exact", &test])
                 .env(FIXTURE_DIR, root.path())
-                .env("COCKPIT_TOOLS_TEST_DATA_DIR", root.path())
+                .env("ORIVANTA_TEST_DATA_DIR", root.path())
                 .status()
                 .unwrap();
             assert!(status.success(), "backup fixture subprocess failed");
@@ -674,7 +674,7 @@ fn antigravity_shared_login_requires_ide_2_6_or_newer() {
         ));
         let _ = std::fs::remove_dir_all(&data_dir);
         std::fs::create_dir_all(&data_dir).expect("create config test directory");
-        std::env::set_var("COCKPIT_TOOLS_TEST_DATA_DIR", &data_dir);
+        std::env::set_var("ORIVANTA_TEST_DATA_DIR", &data_dir);
 
         let config_path = data_dir.join("config.json");
         std::fs::write(
@@ -693,6 +693,6 @@ fn antigravity_shared_login_requires_ide_2_6_or_newer() {
         assert!(loaded.minimax_code_quota_alert_enabled);
         assert_eq!(loaded.minimax_code_quota_alert_threshold, 42);
 
-        std::env::remove_var("COCKPIT_TOOLS_TEST_DATA_DIR");
+        std::env::remove_var("ORIVANTA_TEST_DATA_DIR");
         std::fs::remove_dir_all(&data_dir).expect("remove temp dir");
     }

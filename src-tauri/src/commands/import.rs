@@ -113,7 +113,7 @@ mod tests {
         ));
         let _ = fs::remove_dir_all(&data_dir);
         fs::create_dir_all(&data_dir).expect("create test data dir");
-        std::env::set_var("COCKPIT_TOOLS_TEST_DATA_DIR", &data_dir);
+        std::env::set_var("ORIVANTA_TEST_DATA_DIR", &data_dir);
 
         let account = modules::account::create_pending_oauth_account(
             "pending-export@example.com".to_string(),
@@ -143,7 +143,7 @@ mod tests {
         assert_eq!(exported["mail_url"], "https://mail.example.test/inbox");
         assert_eq!(exported["aux_email"], "backup@example.test");
 
-        std::env::remove_var("COCKPIT_TOOLS_TEST_DATA_DIR");
+        std::env::remove_var("ORIVANTA_TEST_DATA_DIR");
         let _ = fs::remove_dir_all(&data_dir);
     }
 }

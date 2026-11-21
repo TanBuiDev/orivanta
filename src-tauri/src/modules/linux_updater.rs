@@ -372,7 +372,7 @@ mod imp {
 
     fn package_download_path(version: &str, url: &str) -> Result<PathBuf, String> {
         let data_dir = dirs::data_local_dir()
-            .map(|dir| dir.join("cockpit-tools").join("updates").join(version))
+            .map(|dir| dir.join("orivanta").join("updates").join(version))
             .ok_or_else(|| "Failed to resolve local data directory".to_string())?;
         let file_name = Url::parse(url)
             .ok()

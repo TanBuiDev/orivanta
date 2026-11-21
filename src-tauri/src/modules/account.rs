@@ -183,11 +183,11 @@ pub fn resolve_data_dir() -> Result<PathBuf, String> {
 
 pub fn get_data_dir() -> Result<PathBuf, String> {
     // #816: tests can isolate storage via env without touching real user data.
-    // Prefer COCKPIT_TOOLS_TEST_DATA_DIR (community PR name); keep COCKPIT_TEST_DATA_DIR alias.
+    // Prefer ORIVANTA_TEST_DATA_DIR (community PR name); keep ORIVANTA_LEGACY_TEST_DATA_DIR alias.
     for key in [
-        "COCKPIT_TOOLS_TEST_DATA_DIR",
-        "COCKPIT_TEST_DATA_DIR",
-        "COCKPIT_TOOLS_DATA_DIR",
+        "ORIVANTA_TEST_DATA_DIR",
+        "ORIVANTA_LEGACY_TEST_DATA_DIR",
+        "ORIVANTA_DATA_DIR",
     ] {
         if let Ok(override_dir) = std::env::var(key) {
             let override_dir = override_dir.trim();
@@ -1126,7 +1126,7 @@ mod quota_refresh_cache_tests {
             .lock()
             .unwrap_or_else(|error| error.into_inner());
         let dir = tempfile::tempdir().unwrap();
-        const KEY: &str = "COCKPIT_TOOLS_TEST_DATA_DIR";
+        const KEY: &str = "ORIVANTA_TEST_DATA_DIR";
         struct Restore(Option<std::ffi::OsString>);
         impl Drop for Restore {
             fn drop(&mut self) {
@@ -3218,7 +3218,7 @@ mod note_tests {
         ));
         let _ = fs::remove_dir_all(&data_dir);
         fs::create_dir_all(&data_dir).expect("create test data dir");
-        std::env::set_var("COCKPIT_TOOLS_TEST_DATA_DIR", &data_dir);
+        std::env::set_var("ORIVANTA_TEST_DATA_DIR", &data_dir);
 
         let token = TokenData::new(
             "access-token".to_string(),
@@ -3274,7 +3274,7 @@ mod note_tests {
         assert!(cleared.mail_url.is_none());
         assert!(cleared.aux_email.is_none());
 
-        std::env::remove_var("COCKPIT_TOOLS_TEST_DATA_DIR");
+        std::env::remove_var("ORIVANTA_TEST_DATA_DIR");
         let _ = fs::remove_dir_all(&data_dir);
     }
 
@@ -3290,7 +3290,7 @@ mod note_tests {
         ));
         let _ = fs::remove_dir_all(&data_dir);
         fs::create_dir_all(&data_dir).expect("create test data dir");
-        std::env::set_var("COCKPIT_TOOLS_TEST_DATA_DIR", &data_dir);
+        std::env::set_var("ORIVANTA_TEST_DATA_DIR", &data_dir);
 
         let pending = create_pending_oauth_account(
             "pending@example.com".to_string(),
@@ -3337,7 +3337,7 @@ mod note_tests {
         );
         assert_eq!(authorized.aux_email.as_deref(), Some("backup@example.test"));
 
-        std::env::remove_var("COCKPIT_TOOLS_TEST_DATA_DIR");
+        std::env::remove_var("ORIVANTA_TEST_DATA_DIR");
         let _ = fs::remove_dir_all(&data_dir);
     }
 
@@ -3351,7 +3351,7 @@ mod note_tests {
             std::process::id(),
             chrono::Utc::now().timestamp_nanos_opt().unwrap_or(0)
         ));
-        std::env::set_var("COCKPIT_TOOLS_TEST_DATA_DIR", &data_dir);
+        std::env::set_var("ORIVANTA_TEST_DATA_DIR", &data_dir);
         let email = "missing@example.test";
         let pending = create_pending_oauth_account(email.into(), AccountNoteUpdate::default())
             .expect("create pending account");
@@ -3374,7 +3374,7 @@ mod note_tests {
         assert!(create_pending_oauth_account(email.into(), AccountNoteUpdate::default()).is_err());
         assert!(upsert_account(email.into(), None, token).is_err());
         assert_eq!(fs::read_to_string(detail).unwrap(), "invalid json");
-        std::env::remove_var("COCKPIT_TOOLS_TEST_DATA_DIR");
+        std::env::remove_var("ORIVANTA_TEST_DATA_DIR");
         let _ = fs::remove_dir_all(&data_dir);
     }
 
@@ -3390,7 +3390,7 @@ mod note_tests {
         ));
         let _ = fs::remove_dir_all(&data_dir);
         fs::create_dir_all(&data_dir).expect("create test data dir");
-        std::env::set_var("COCKPIT_TOOLS_TEST_DATA_DIR", &data_dir);
+        std::env::set_var("ORIVANTA_TEST_DATA_DIR", &data_dir);
 
         let token1 = TokenData::new(
             "access-token-1".to_string(),
@@ -3434,7 +3434,7 @@ mod note_tests {
         assert_eq!(loaded.token.session_id.as_deref(), Some("session-1"));
         assert_eq!(loaded.name.as_deref(), Some("Original Name"));
 
-        std::env::remove_var("COCKPIT_TOOLS_TEST_DATA_DIR");
+        std::env::remove_var("ORIVANTA_TEST_DATA_DIR");
         let _ = fs::remove_dir_all(&data_dir);
     }
 }

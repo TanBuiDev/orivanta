@@ -69,10 +69,10 @@ impl LaunchFixture {
             .lock()
             .unwrap_or_else(|error| error.into_inner());
         let temp = TempDir::new(tag);
-        let previous_data_dir = std::env::var_os("COCKPIT_TOOLS_TEST_DATA_DIR");
-        let previous_resolved_data_dir = std::env::var_os("COCKPIT_TOOLS_DATA_DIR");
-        std::env::set_var("COCKPIT_TOOLS_TEST_DATA_DIR", &temp.0);
-        std::env::set_var("COCKPIT_TOOLS_DATA_DIR", &temp.0);
+        let previous_data_dir = std::env::var_os("ORIVANTA_TEST_DATA_DIR");
+        let previous_resolved_data_dir = std::env::var_os("ORIVANTA_DATA_DIR");
+        std::env::set_var("ORIVANTA_TEST_DATA_DIR", &temp.0);
+        std::env::set_var("ORIVANTA_DATA_DIR", &temp.0);
         let fixture = Self {
             _env_lock: env_lock,
             temp,
@@ -104,12 +104,12 @@ impl Drop for LaunchFixture {
         // cleanup nor any account read can reach the user's storage directory.
         codex_unified_proxy::reset_cache();
         match &self.previous_data_dir {
-            Some(value) => std::env::set_var("COCKPIT_TOOLS_TEST_DATA_DIR", value),
-            None => std::env::remove_var("COCKPIT_TOOLS_TEST_DATA_DIR"),
+            Some(value) => std::env::set_var("ORIVANTA_TEST_DATA_DIR", value),
+            None => std::env::remove_var("ORIVANTA_TEST_DATA_DIR"),
         }
         match &self.previous_resolved_data_dir {
-            Some(value) => std::env::set_var("COCKPIT_TOOLS_DATA_DIR", value),
-            None => std::env::remove_var("COCKPIT_TOOLS_DATA_DIR"),
+            Some(value) => std::env::set_var("ORIVANTA_DATA_DIR", value),
+            None => std::env::remove_var("ORIVANTA_DATA_DIR"),
         }
     }
 }

@@ -52,3 +52,11 @@ docs/plugin-architecture-proposal.md
 .qoder/
 
 sidecars/mihomo/bin/
+
+# Orivanta local environment and release signing material
+.env
+.env.*
+!.env.example
+*.p12
+*.pfx
+*.key

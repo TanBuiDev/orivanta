@@ -20,7 +20,7 @@ impl MigrationFixture {
         for (key, value) in [
             ("HOME", home),
             ("CODEX_HOME", codex),
-            ("COCKPIT_TOOLS_TEST_DATA_DIR", data),
+            ("ORIVANTA_TEST_DATA_DIR", data),
         ] {
             previous.push((key, std::env::var_os(key)));
             std::env::set_var(key, value);

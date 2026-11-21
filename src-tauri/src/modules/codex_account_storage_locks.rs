@@ -10,11 +10,11 @@ pub(crate) fn client_instance_id_for_profile_dir(base_dir: &Path) -> String {
         .to_string()
 }
 
-/// 旧版数据目录（~/Library/Application Support/com.antigravity.cockpit-tools/）
+/// 旧版数据目录（~/Library/Application Support/dev.tanbuidev.orivanta.legacy/）
 fn get_old_codex_data_dir() -> PathBuf {
     dirs::data_local_dir()
         .unwrap_or_else(|| dirs::home_dir().expect("无法获取用户目录"))
-        .join("com.antigravity.cockpit-tools")
+        .join("dev.tanbuidev.orivanta.legacy")
 }
 
 /// 将旧目录中的 codex 数据迁移到新目录（一次性，迁移成功后删除旧文件）
@@ -26,9 +26,9 @@ fn migrate_codex_data_if_needed(new_data_dir: &PathBuf) {
         return;
     }
     #[cfg(test)]
-    if std::env::var_os("COCKPIT_TOOLS_TEST_DATA_DIR").is_some()
-        || std::env::var_os("COCKPIT_TEST_DATA_DIR").is_some()
-        || std::env::var_os("COCKPIT_TOOLS_DATA_DIR").is_some()
+    if std::env::var_os("ORIVANTA_TEST_DATA_DIR").is_some()
+        || std::env::var_os("ORIVANTA_LEGACY_TEST_DATA_DIR").is_some()
+        || std::env::var_os("ORIVANTA_DATA_DIR").is_some()
     {
         return;
     }
@@ -81,7 +81,7 @@ fn migrate_codex_data_if_needed(new_data_dir: &PathBuf) {
     }
 }
 
-/// 获取我们的多账号存储路径（使用公共数据目录入口 ~/.cockpit_tools/，兼容旧目录）
+/// 获取我们的多账号存储路径（使用公共数据目录入口 ~/.orivanta/，兼容旧目录）
 fn get_accounts_storage_path() -> PathBuf {
     let data_dir = account::get_data_dir().unwrap_or_else(|_| {
         crate::modules::data_paths::fallback_data_dir()
@@ -101,7 +101,7 @@ fn codex_accounts_dir_in(data_dir: &Path) -> PathBuf {
     accounts_dir
 }
 
-/// 获取账号详情存储目录（使用公共数据目录入口 ~/.cockpit_tools/，兼容旧目录；账号文件位于 codex_accounts/）
+/// 获取账号详情存储目录（使用公共数据目录入口 ~/.orivanta/，兼容旧目录；账号文件位于 codex_accounts/）
 fn get_accounts_dir() -> PathBuf {
     codex_accounts_dir_in(&resolve_codex_account_data_dir())
 }
@@ -127,9 +127,9 @@ pub(crate) fn account_storage_status(
     validate_recycle_account_id(account_id)?;
     // Match the account store's override order without creating storage directories.
     let override_dir = [
-        "COCKPIT_TOOLS_TEST_DATA_DIR",
-        "COCKPIT_TEST_DATA_DIR",
-        "COCKPIT_TOOLS_DATA_DIR",
+        "ORIVANTA_TEST_DATA_DIR",
+        "ORIVANTA_LEGACY_TEST_DATA_DIR",
+        "ORIVANTA_DATA_DIR",
     ]
     .into_iter()
     .filter_map(|key| std::env::var(key).ok())
@@ -493,7 +493,7 @@ pub(crate) fn try_acquire_profile_mutation_lease(
                     "pid={}\nprofile_dir={}\nprofile={}\nreason={}\ncreated_at={}\n",
                     std::process::id(),
                     profile_dir.display(),
-                    std::env::var("COCKPIT_TOOLS_PROFILE").unwrap_or_else(|_| "prod".to_string()),
+                    std::env::var("ORIVANTA_PROFILE").unwrap_or_else(|_| "prod".to_string()),
                     reason,
                     now_timestamp()
                 );

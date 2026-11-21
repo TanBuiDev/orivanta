@@ -962,7 +962,7 @@
             for key in ["HTTP_PROXY", "HTTPS_PROXY", "ALL_PROXY", "http_proxy", "https_proxy", "all_proxy"] {
                 command.env_remove(key);
             }
-            for key in ["COCKPIT_TOOLS_TEST_DATA_DIR", "COCKPIT_TOOLS_DATA_DIR", "COCKPIT_TEST_DATA_DIR"] {
+            for key in ["ORIVANTA_TEST_DATA_DIR", "ORIVANTA_DATA_DIR", "ORIVANTA_LEGACY_TEST_DATA_DIR"] {
                 command.env(key, &data_dir);
             }
             let output = command
@@ -3330,10 +3330,10 @@ http_headers = { "x-cockpit-instance-id" = "default" }
     impl LocalAccessTestDataGuard {
         fn new(prefix: &str) -> Self {
             let data_dir = make_temp_dir(prefix);
-            let previous_test_data_dir = std::env::var("COCKPIT_TOOLS_TEST_DATA_DIR").ok();
-            let previous_data_dir = std::env::var("COCKPIT_TOOLS_DATA_DIR").ok();
-            std::env::set_var("COCKPIT_TOOLS_TEST_DATA_DIR", &data_dir);
-            std::env::set_var("COCKPIT_TOOLS_DATA_DIR", &data_dir);
+            let previous_test_data_dir = std::env::var("ORIVANTA_TEST_DATA_DIR").ok();
+            let previous_data_dir = std::env::var("ORIVANTA_DATA_DIR").ok();
+            std::env::set_var("ORIVANTA_TEST_DATA_DIR", &data_dir);
+            std::env::set_var("ORIVANTA_DATA_DIR", &data_dir);
 
             let takeover_backup_path =
                 super::local_access_takeover_backups_path().expect("resolve takeover backup path");
@@ -3355,12 +3355,12 @@ http_headers = { "x-cockpit-instance-id" = "default" }
     impl Drop for LocalAccessTestDataGuard {
         fn drop(&mut self) {
             match self.previous_test_data_dir.as_deref() {
-                Some(value) => std::env::set_var("COCKPIT_TOOLS_TEST_DATA_DIR", value),
-                None => std::env::remove_var("COCKPIT_TOOLS_TEST_DATA_DIR"),
+                Some(value) => std::env::set_var("ORIVANTA_TEST_DATA_DIR", value),
+                None => std::env::remove_var("ORIVANTA_TEST_DATA_DIR"),
             }
             match self.previous_data_dir.as_deref() {
-                Some(value) => std::env::set_var("COCKPIT_TOOLS_DATA_DIR", value),
-                None => std::env::remove_var("COCKPIT_TOOLS_DATA_DIR"),
+                Some(value) => std::env::set_var("ORIVANTA_DATA_DIR", value),
+                None => std::env::remove_var("ORIVANTA_DATA_DIR"),
             }
             match self.previous_takeover_backup.as_deref() {
                 Some(content) => {

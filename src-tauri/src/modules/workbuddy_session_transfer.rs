@@ -709,7 +709,7 @@ mod tests {
                 ])
                 .env(FIXTURE_HOME, &temp.0)
                 .env("HOME", &temp.0)
-                .env("COCKPIT_TOOLS_DATA_DIR", temp.0.join("cockpit"))
+                .env("ORIVANTA_DATA_DIR", temp.0.join("cockpit"))
                 .output()
                 .unwrap();
             assert!(

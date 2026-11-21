@@ -1,11 +1,11 @@
 {
   "$schema": "https://schema.tauri.app/config/2",
-  "productName": "Cockpit Tools",
+  "productName": "Orivanta",
   "version": "1.4.2",
-  "identifier": "com.jlcodes.cockpit-tools",
+  "identifier": "dev.tanbuidev.orivanta",
   "build": {
     "beforeDevCommand": "node scripts/prepare-tauri.cjs && npm run dev",
-    "devUrl": "http://localhost:1420",
+    "devUrl": "http://localhost:1470",
     "beforeBuildCommand": "node scripts/prepare-tauri.cjs && npm run build",
     "frontendDist": "../dist"
   },
@@ -14,7 +14,7 @@
     "windows": [
       {
         "label": "main",
-        "title": "Cockpit Tools",
+        "title": "Orivanta",
         "width": 1280,
         "height": 800,
         "minWidth": 900,
@@ -27,7 +27,7 @@
       },
       {
         "label": "floating-card",
-        "title": "Cockpit Tools",
+        "title": "Orivanta",
         "create": false,
         "width": 250,
         "height": 290,
@@ -49,11 +49,10 @@
   "bundle": {
     "active": true,
     "targets": "all",
-    "createUpdaterArtifacts": true,
+    "createUpdaterArtifacts": false,
     "windows": {
       "nsis": {
-        "installMode": "currentUser",
-        "installerHooks": "./windows/nsis/installer-hooks.nsh"
+        "installMode": "currentUser"
       }
     },
     "linux": {
@@ -96,7 +95,7 @@
       "../resources/licenses/dnd-kit.txt": "licenses/dnd-kit.txt"
     },
     "macOS": {
-      "bundleName": "Cockpit Tools",
+      "bundleName": "Orivanta",
       "hardenedRuntime": true,
       "infoPlist": "Info.plist"
     }
@@ -105,18 +104,10 @@
     "deep-link": {
       "desktop": {
         "schemes": [
-          "cockpit-tools",
-          "cockpittools",
-          "zcode"
+          "orivanta"
         ]
       }
-    },
-    "updater": {
-      "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IEMxRkU1RTdBRDdCRUUzM0QKUldROTQ3N1hlbDcrd1ZVQ2E3b1ZoVUdXL3BWQmpjdzNnWllNUW1LNHVwcE9wdGI1Q1UxQmdnQ0oK",
-      "endpoints": [
-        "https://github.com/jlcodes99/cockpit-tools/releases/latest/download/latest-{{target}}.json",
-        "https://github.com/jlcodes99/cockpit-tools/releases/latest/download/latest.json"
-      ]
     }
-  }
+  },
+  "mainBinaryName": "orivanta"
 }

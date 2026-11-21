@@ -903,10 +903,10 @@ mod tests {
             let root = std::env::temp_dir().join(format!("{}-{}", prefix, uuid::Uuid::new_v4()));
             let data_dir = root.join("data");
             std::fs::create_dir_all(&data_dir).expect("create test data dir");
-            let previous_test_data_dir = std::env::var_os("COCKPIT_TOOLS_TEST_DATA_DIR");
-            let previous_data_dir = std::env::var_os("COCKPIT_TOOLS_DATA_DIR");
-            std::env::set_var("COCKPIT_TOOLS_TEST_DATA_DIR", &data_dir);
-            std::env::set_var("COCKPIT_TOOLS_DATA_DIR", &data_dir);
+            let previous_test_data_dir = std::env::var_os("ORIVANTA_TEST_DATA_DIR");
+            let previous_data_dir = std::env::var_os("ORIVANTA_DATA_DIR");
+            std::env::set_var("ORIVANTA_TEST_DATA_DIR", &data_dir);
+            std::env::set_var("ORIVANTA_DATA_DIR", &data_dir);
             Self {
                 root,
                 previous_test_data_dir,
@@ -918,12 +918,12 @@ mod tests {
     impl Drop for TestDataDirGuard {
         fn drop(&mut self) {
             match self.previous_test_data_dir.as_ref() {
-                Some(value) => std::env::set_var("COCKPIT_TOOLS_TEST_DATA_DIR", value),
-                None => std::env::remove_var("COCKPIT_TOOLS_TEST_DATA_DIR"),
+                Some(value) => std::env::set_var("ORIVANTA_TEST_DATA_DIR", value),
+                None => std::env::remove_var("ORIVANTA_TEST_DATA_DIR"),
             }
             match self.previous_data_dir.as_ref() {
-                Some(value) => std::env::set_var("COCKPIT_TOOLS_DATA_DIR", value),
-                None => std::env::remove_var("COCKPIT_TOOLS_DATA_DIR"),
+                Some(value) => std::env::set_var("ORIVANTA_DATA_DIR", value),
+                None => std::env::remove_var("ORIVANTA_DATA_DIR"),
             }
             let _ = std::fs::remove_dir_all(&self.root);
         }

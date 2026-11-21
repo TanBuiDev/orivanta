@@ -181,15 +181,15 @@ fn imported_storage_retains_rotated_tokens_and_rejects_stale_or_deleted_refreshe
     impl Drop for RestoreEnv {
         fn drop(&mut self) {
             if let Some(value) = &self.0 {
-                std::env::set_var("COCKPIT_TOOLS_TEST_DATA_DIR", value);
+                std::env::set_var("ORIVANTA_TEST_DATA_DIR", value);
             } else {
-                std::env::remove_var("COCKPIT_TOOLS_TEST_DATA_DIR");
+                std::env::remove_var("ORIVANTA_TEST_DATA_DIR");
             }
         }
     }
-    let _restore = RestoreEnv(std::env::var_os("COCKPIT_TOOLS_TEST_DATA_DIR"));
+    let _restore = RestoreEnv(std::env::var_os("ORIVANTA_TEST_DATA_DIR"));
     let dir = tempfile::tempdir().unwrap();
-    std::env::set_var("COCKPIT_TOOLS_TEST_DATA_DIR", dir.path());
+    std::env::set_var("ORIVANTA_TEST_DATA_DIR", dir.path());
     let raw = json!({"email":"fixture@example.test", "credentials":{"refreshToken":"original-refresh", "provider":"Google"}}).to_string();
     let imported = import_from_json(&raw).unwrap().remove(0);
     assert!(imported.access_token.is_empty());

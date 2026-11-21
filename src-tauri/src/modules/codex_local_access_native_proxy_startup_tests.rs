@@ -28,8 +28,8 @@ fn native_proxy_cold_start_case(test_name: &str, scenario: &str) {
         .env_clear()
         .env(SCENARIO, scenario)
         .env("COCKPIT_TEST_NATIVE_PROXY_RESULT", &result_path)
-        .env("COCKPIT_TOOLS_DATA_DIR", directory.path().join("data"))
-        .env("COCKPIT_TOOLS_TEST_DATA_DIR", directory.path().join("data"))
+        .env("ORIVANTA_DATA_DIR", directory.path().join("data"))
+        .env("ORIVANTA_TEST_DATA_DIR", directory.path().join("data"))
         .args([
             "--exact",
             &format!("modules::codex_local_access::native_transport_identity_tests::{test_name}"),
@@ -97,7 +97,7 @@ async fn native_proxy_cold_start_network_case(scenario: &str) {
     let data = crate::modules::account::get_data_dir().unwrap();
     assert_eq!(
         data,
-        PathBuf::from(std::env::var("COCKPIT_TOOLS_TEST_DATA_DIR").unwrap())
+        PathBuf::from(std::env::var("ORIVANTA_TEST_DATA_DIR").unwrap())
     );
     codex_unified_proxy::reset_cache();
     let store = data.join("codex-unified-proxy.json");

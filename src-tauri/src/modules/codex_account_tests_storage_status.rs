@@ -105,7 +105,7 @@ fn account_storage_status_uses_isolated_account_store_override() {
         .lock()
         .unwrap_or_else(|error| error.into_inner());
     let env = TestEnvGuard::new("codex-storage-status-override");
-    let data_dir = env.home_dir.join(".antigravity_cockpit");
+    let data_dir = env.home_dir.join(".orivanta_legacy");
     fs::create_dir_all(data_dir.join("codex_accounts")).unwrap();
     fs::write(data_dir.join("codex_accounts/account-1.json"), "opaque").unwrap();
     assert_eq!(

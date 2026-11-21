@@ -950,8 +950,8 @@ struct TestData {
 impl TestData {
     fn new() -> Self {
         let directory = tempfile::tempdir().unwrap();
-        let previous = std::env::var_os("COCKPIT_TOOLS_TEST_DATA_DIR");
-        std::env::set_var("COCKPIT_TOOLS_TEST_DATA_DIR", directory.path());
+        let previous = std::env::var_os("ORIVANTA_TEST_DATA_DIR");
+        std::env::set_var("ORIVANTA_TEST_DATA_DIR", directory.path());
         Self {
             _directory: directory,
             previous,
@@ -962,8 +962,8 @@ impl TestData {
 impl Drop for TestData {
     fn drop(&mut self) {
         match self.previous.take() {
-            Some(value) => std::env::set_var("COCKPIT_TOOLS_TEST_DATA_DIR", value),
-            None => std::env::remove_var("COCKPIT_TOOLS_TEST_DATA_DIR"),
+            Some(value) => std::env::set_var("ORIVANTA_TEST_DATA_DIR", value),
+            None => std::env::remove_var("ORIVANTA_TEST_DATA_DIR"),
         }
     }
 }

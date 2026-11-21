@@ -38,7 +38,7 @@ async fn native_api_key_proxy_network_case(scenario: &str) {
     let data = crate::modules::account::get_data_dir().unwrap();
     assert_eq!(
         data,
-        PathBuf::from(std::env::var("COCKPIT_TOOLS_TEST_DATA_DIR").unwrap())
+        PathBuf::from(std::env::var("ORIVANTA_TEST_DATA_DIR").unwrap())
     );
     codex_unified_proxy::reset_cache();
     let mut input = Inputs::new();

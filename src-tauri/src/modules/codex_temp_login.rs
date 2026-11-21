@@ -1004,9 +1004,9 @@ mod tests {
         fn new(prefix: &str) -> Self {
             let root = std::env::temp_dir().join(format!("{}-{}", prefix, uuid::Uuid::new_v4()));
             fs::create_dir_all(&root).expect("create test root");
-            let previous_data_dir = std::env::var("COCKPIT_TOOLS_TEST_DATA_DIR").ok();
+            let previous_data_dir = std::env::var("ORIVANTA_TEST_DATA_DIR").ok();
             let previous_home = std::env::var("HOME").ok();
-            std::env::set_var("COCKPIT_TOOLS_TEST_DATA_DIR", &root);
+            std::env::set_var("ORIVANTA_TEST_DATA_DIR", &root);
             std::env::set_var("HOME", &root);
             Self {
                 root,
@@ -1019,8 +1019,8 @@ mod tests {
     impl Drop for TestEnvGuard {
         fn drop(&mut self) {
             match self.previous_data_dir.as_ref() {
-                Some(value) => std::env::set_var("COCKPIT_TOOLS_TEST_DATA_DIR", value),
-                None => std::env::remove_var("COCKPIT_TOOLS_TEST_DATA_DIR"),
+                Some(value) => std::env::set_var("ORIVANTA_TEST_DATA_DIR", value),
+                None => std::env::remove_var("ORIVANTA_TEST_DATA_DIR"),
             }
             match self.previous_home.as_ref() {
                 Some(value) => std::env::set_var("HOME", value),

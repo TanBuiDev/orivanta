@@ -160,9 +160,9 @@ pub(super) fn read_only_data_dir() -> Result<std::path::PathBuf, String> {
     // Match account::get_data_dir's overrides without creating a directory on
     // this observational path when the service has never been configured.
     for name in [
-        "COCKPIT_TOOLS_TEST_DATA_DIR",
-        "COCKPIT_TEST_DATA_DIR",
-        "COCKPIT_TOOLS_DATA_DIR",
+        "ORIVANTA_TEST_DATA_DIR",
+        "ORIVANTA_LEGACY_TEST_DATA_DIR",
+        "ORIVANTA_DATA_DIR",
     ] {
         if let Ok(value) = std::env::var(name) {
             if !value.trim().is_empty() {

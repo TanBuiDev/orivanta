@@ -13,7 +13,7 @@ impl Fixture {
             .unwrap_or_else(|e| e.into_inner());
         let root = std::env::temp_dir().join(format!("codex-switch-binding-{}", Uuid::new_v4()));
         fs::create_dir_all(&root).unwrap();
-        let keys = ["COCKPIT_TOOLS_TEST_DATA_DIR", "COCKPIT_TOOLS_DATA_DIR"];
+        let keys = ["ORIVANTA_TEST_DATA_DIR", "ORIVANTA_DATA_DIR"];
         let previous = keys.map(std::env::var_os);
         for key in keys {
             std::env::set_var(key, &root);
@@ -28,7 +28,7 @@ impl Fixture {
 
 impl Drop for Fixture {
     fn drop(&mut self) {
-        for (key, previous) in ["COCKPIT_TOOLS_TEST_DATA_DIR", "COCKPIT_TOOLS_DATA_DIR"]
+        for (key, previous) in ["ORIVANTA_TEST_DATA_DIR", "ORIVANTA_DATA_DIR"]
             .into_iter()
             .zip(&self.previous)
         {

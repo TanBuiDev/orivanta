@@ -17,7 +17,7 @@ mod profile_copy_integration_tests {
             let mut saved = Vec::new();
             for (key, value) in [
                 ("CODEX_HOME", root.join("source")),
-                ("COCKPIT_TOOLS_TEST_DATA_DIR", root.join("cockpit-data")),
+                ("ORIVANTA_TEST_DATA_DIR", root.join("cockpit-data")),
             ] {
                 saved.push((key, std::env::var_os(key)));
                 std::env::set_var(key, value);

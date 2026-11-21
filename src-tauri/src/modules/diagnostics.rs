@@ -13,7 +13,7 @@ use uuid::Uuid;
 use crate::modules::{config, logger};
 
 const SENTRY_CLIENT: &str = "cockpit-tools/1.0";
-const PROFILE_ENV: &str = "COCKPIT_TOOLS_PROFILE";
+const PROFILE_ENV: &str = "ORIVANTA_PROFILE";
 const FRONTEND_READY_TIMEOUT_MS: u64 = 15_000;
 const SAME_EVENT_THROTTLE_MS: u128 = 60_000;
 const MAX_EVENTS_PER_MINUTE: usize = 30;

@@ -268,7 +268,7 @@ mod tests {
         ));
         let _ = fs::remove_dir_all(&dir);
         fs::create_dir_all(&dir).expect("temp dir");
-        std::env::set_var("COCKPIT_TOOLS_TEST_DATA_DIR", &dir);
+        std::env::set_var("ORIVANTA_TEST_DATA_DIR", &dir);
 
         let account = DemoAccount {
             id: "a1".into(),
@@ -310,7 +310,7 @@ mod tests {
         let saved: serde_json::Value = deserialize_encrypted_snapshot(&fs::read_to_string(&path).unwrap()).unwrap();
         assert_eq!(saved["last_switched_at"], 200);
 
-        std::env::remove_var("COCKPIT_TOOLS_TEST_DATA_DIR");
+        std::env::remove_var("ORIVANTA_TEST_DATA_DIR");
         let _ = fs::remove_dir_all(&dir);
     }
 }

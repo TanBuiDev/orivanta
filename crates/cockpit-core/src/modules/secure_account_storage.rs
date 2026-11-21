@@ -269,7 +269,7 @@ mod tests {
         let output = std::process::Command::new(std::env::current_exe().unwrap())
             .args(["--exact", "modules::secure_account_storage::tests::credential_roundtrip_through_provider_entrypoints"])
             .env(FIXTURE_ROOT, root)
-            .env("COCKPIT_TOOLS_DATA_DIR", root)
+            .env("ORIVANTA_DATA_DIR", root)
             .output().unwrap();
         assert!(
             output.status.success(),
@@ -377,7 +377,7 @@ mod tests {
         let output = std::process::Command::new(std::env::current_exe().unwrap())
             .args(["--exact", "modules::secure_account_storage::tests::shared_provider_editors_keep_details_encrypted_and_preserve_desktop_fields"])
             .env(FIXTURE, "1")
-            .env("COCKPIT_TOOLS_DATA_DIR", root.path())
+            .env("ORIVANTA_DATA_DIR", root.path())
             .output().unwrap();
         assert!(
             output.status.success(),

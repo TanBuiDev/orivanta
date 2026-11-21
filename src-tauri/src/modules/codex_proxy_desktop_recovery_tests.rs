@@ -173,17 +173,17 @@ async fn restored_entry_uses_current_direct_mode_and_forwards_without_client_res
     impl Drop for Cleanup {
         fn drop(&mut self) {
             match &self.previous {
-                Some(value) => std::env::set_var("COCKPIT_TOOLS_TEST_DATA_DIR", value),
-                None => std::env::remove_var("COCKPIT_TOOLS_TEST_DATA_DIR"),
+                Some(value) => std::env::set_var("ORIVANTA_TEST_DATA_DIR", value),
+                None => std::env::remove_var("ORIVANTA_TEST_DATA_DIR"),
             }
             let _ = fs::remove_dir_all(&self.path);
         }
     }
     let _cleanup = Cleanup {
         path: temp.clone(),
-        previous: std::env::var_os("COCKPIT_TOOLS_TEST_DATA_DIR"),
+        previous: std::env::var_os("ORIVANTA_TEST_DATA_DIR"),
     };
-    std::env::set_var("COCKPIT_TOOLS_TEST_DATA_DIR", &temp);
+    std::env::set_var("ORIVANTA_TEST_DATA_DIR", &temp);
     let id = format!("restored-direct-{}", uuid::Uuid::new_v4());
     let mut account = CodexAccount::new(
         id.clone(),

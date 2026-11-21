@@ -2275,8 +2275,8 @@ mod tests {
             let _ = std::fs::remove_dir_all(&data_dir);
             std::fs::create_dir_all(&data_dir).expect("create test data dir");
 
-            let previous_data_dir = std::env::var_os("COCKPIT_TOOLS_DATA_DIR");
-            std::env::set_var("COCKPIT_TOOLS_DATA_DIR", &data_dir);
+            let previous_data_dir = std::env::var_os("ORIVANTA_DATA_DIR");
+            std::env::set_var("ORIVANTA_DATA_DIR", &data_dir);
 
             Self {
                 data_dir,
@@ -2288,8 +2288,8 @@ mod tests {
     impl Drop for TestEnvGuard {
         fn drop(&mut self) {
             match self.previous_data_dir.as_ref() {
-                Some(value) => std::env::set_var("COCKPIT_TOOLS_DATA_DIR", value),
-                None => std::env::remove_var("COCKPIT_TOOLS_DATA_DIR"),
+                Some(value) => std::env::set_var("ORIVANTA_DATA_DIR", value),
+                None => std::env::remove_var("ORIVANTA_DATA_DIR"),
             }
             let _ = std::fs::remove_dir_all(&self.data_dir);
         }

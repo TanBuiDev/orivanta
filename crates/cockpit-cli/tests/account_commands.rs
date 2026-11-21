@@ -14,9 +14,9 @@ fn run(root: &Path, args: &[&str]) -> Output {
         .env("APPDATA", root)
         .env("XDG_DATA_HOME", root.join("local-data"))
         .env("CODEX_HOME", root.join("codex"))
-        .env("COCKPIT_TOOLS_DATA_DIR", root.join("data"))
-        .env_remove("COCKPIT_TOOLS_TEST_DATA_DIR")
-        .env_remove("COCKPIT_TEST_DATA_DIR")
+        .env("ORIVANTA_DATA_DIR", root.join("data"))
+        .env_remove("ORIVANTA_TEST_DATA_DIR")
+        .env_remove("ORIVANTA_LEGACY_TEST_DATA_DIR")
         .output()
         .unwrap()
 }

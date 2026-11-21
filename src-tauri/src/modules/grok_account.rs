@@ -3262,13 +3262,13 @@ theme = "system"
         impl Drop for ImportDataDirGuard {
             fn drop(&mut self) {
                 match self.0.as_ref() {
-                    Some(value) => std::env::set_var("COCKPIT_TOOLS_TEST_DATA_DIR", value),
-                    None => std::env::remove_var("COCKPIT_TOOLS_TEST_DATA_DIR"),
+                    Some(value) => std::env::set_var("ORIVANTA_TEST_DATA_DIR", value),
+                    None => std::env::remove_var("ORIVANTA_TEST_DATA_DIR"),
                 }
             }
         }
-        let _environment = ImportDataDirGuard(std::env::var_os("COCKPIT_TOOLS_TEST_DATA_DIR"));
-        std::env::set_var("COCKPIT_TOOLS_TEST_DATA_DIR", &temp.0);
+        let _environment = ImportDataDirGuard(std::env::var_os("ORIVANTA_TEST_DATA_DIR"));
+        std::env::set_var("ORIVANTA_TEST_DATA_DIR", &temp.0);
         let account = sample_account();
         let exported = serde_json::to_string_pretty(&vec![&account]).expect("serialize export");
         let value: Value = serde_json::from_str(&exported).expect("parse export");
@@ -3381,9 +3381,9 @@ theme = "system"
             let home_dir = root.join("home");
             std::fs::create_dir_all(&data_dir).expect("create test data directory");
             std::fs::create_dir_all(&home_dir).expect("create test home directory");
-            let previous_data_dir = std::env::var_os("COCKPIT_TOOLS_DATA_DIR");
+            let previous_data_dir = std::env::var_os("ORIVANTA_DATA_DIR");
             let previous_home = std::env::var_os("HOME");
-            std::env::set_var("COCKPIT_TOOLS_DATA_DIR", data_dir);
+            std::env::set_var("ORIVANTA_DATA_DIR", data_dir);
             std::env::set_var("HOME", home_dir);
             Self {
                 previous_data_dir,
@@ -3396,8 +3396,8 @@ theme = "system"
     impl Drop for EnvironmentGuard {
         fn drop(&mut self) {
             match self.previous_data_dir.as_ref() {
-                Some(value) => std::env::set_var("COCKPIT_TOOLS_DATA_DIR", value),
-                None => std::env::remove_var("COCKPIT_TOOLS_DATA_DIR"),
+                Some(value) => std::env::set_var("ORIVANTA_DATA_DIR", value),
+                None => std::env::remove_var("ORIVANTA_DATA_DIR"),
             }
             match self.previous_home.as_ref() {
                 Some(value) => std::env::set_var("HOME", value),

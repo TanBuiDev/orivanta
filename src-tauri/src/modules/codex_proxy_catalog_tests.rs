@@ -342,17 +342,17 @@ struct DataDir {
 }
 impl DataDir {
     fn set(path: &Path) -> Self {
-        let test = std::env::var_os("COCKPIT_TOOLS_TEST_DATA_DIR");
-        let data = std::env::var_os("COCKPIT_TOOLS_DATA_DIR");
-        std::env::set_var("COCKPIT_TOOLS_TEST_DATA_DIR", path);
-        std::env::set_var("COCKPIT_TOOLS_DATA_DIR", path);
+        let test = std::env::var_os("ORIVANTA_TEST_DATA_DIR");
+        let data = std::env::var_os("ORIVANTA_DATA_DIR");
+        std::env::set_var("ORIVANTA_TEST_DATA_DIR", path);
+        std::env::set_var("ORIVANTA_DATA_DIR", path);
         Self { test, data }
     }
 }
 impl Drop for DataDir {
     fn drop(&mut self) {
-        restore_env("COCKPIT_TOOLS_TEST_DATA_DIR", self.test.take());
-        restore_env("COCKPIT_TOOLS_DATA_DIR", self.data.take());
+        restore_env("ORIVANTA_TEST_DATA_DIR", self.test.take());
+        restore_env("ORIVANTA_DATA_DIR", self.data.take());
     }
 }
 /// 策略测试用的订阅来源：普通节点与声明证书例外的 TLS 节点均可直接使用。
@@ -1457,23 +1457,23 @@ fn unnamed_import_partial_opt_in_duplicates_and_rename_preserve_bindings() {
     impl Drop for Restore {
         fn drop(&mut self) {
             if let Some(v) = self.1.take() {
-                std::env::set_var("COCKPIT_TOOLS_DATA_DIR", v)
+                std::env::set_var("ORIVANTA_DATA_DIR", v)
             } else {
-                std::env::remove_var("COCKPIT_TOOLS_DATA_DIR")
+                std::env::remove_var("ORIVANTA_DATA_DIR")
             }
             if let Some(v) = self.0.take() {
-                std::env::set_var("COCKPIT_TOOLS_TEST_DATA_DIR", v)
+                std::env::set_var("ORIVANTA_TEST_DATA_DIR", v)
             } else {
-                std::env::remove_var("COCKPIT_TOOLS_TEST_DATA_DIR")
+                std::env::remove_var("ORIVANTA_TEST_DATA_DIR")
             }
         }
     }
     let _restore = Restore(
-        std::env::var_os("COCKPIT_TOOLS_TEST_DATA_DIR"),
-        std::env::var_os("COCKPIT_TOOLS_DATA_DIR"),
+        std::env::var_os("ORIVANTA_TEST_DATA_DIR"),
+        std::env::var_os("ORIVANTA_DATA_DIR"),
     );
-    std::env::set_var("COCKPIT_TOOLS_TEST_DATA_DIR", &temp.0);
-    std::env::set_var("COCKPIT_TOOLS_DATA_DIR", &temp.0);
+    std::env::set_var("ORIVANTA_TEST_DATA_DIR", &temp.0);
+    std::env::set_var("ORIVANTA_DATA_DIR", &temp.0);
     assert!(path().unwrap().starts_with(&temp.0));
     tokio::runtime::Builder::new_current_thread()
         .enable_all()
@@ -1574,23 +1574,23 @@ async fn default_commands_store_only_validated_ids_and_members() {
     impl Drop for Restore {
         fn drop(&mut self) {
             if let Some(v) = self.0.take() {
-                std::env::set_var("COCKPIT_TOOLS_TEST_DATA_DIR", v)
+                std::env::set_var("ORIVANTA_TEST_DATA_DIR", v)
             } else {
-                std::env::remove_var("COCKPIT_TOOLS_TEST_DATA_DIR")
+                std::env::remove_var("ORIVANTA_TEST_DATA_DIR")
             }
             if let Some(v) = self.1.take() {
-                std::env::set_var("COCKPIT_TOOLS_DATA_DIR", v)
+                std::env::set_var("ORIVANTA_DATA_DIR", v)
             } else {
-                std::env::remove_var("COCKPIT_TOOLS_DATA_DIR")
+                std::env::remove_var("ORIVANTA_DATA_DIR")
             }
         }
     }
     let _restore = Restore(
-        std::env::var_os("COCKPIT_TOOLS_TEST_DATA_DIR"),
-        std::env::var_os("COCKPIT_TOOLS_DATA_DIR"),
+        std::env::var_os("ORIVANTA_TEST_DATA_DIR"),
+        std::env::var_os("ORIVANTA_DATA_DIR"),
     );
-    std::env::set_var("COCKPIT_TOOLS_TEST_DATA_DIR", &temp.0);
-    std::env::set_var("COCKPIT_TOOLS_DATA_DIR", &temp.0);
+    std::env::set_var("ORIVANTA_TEST_DATA_DIR", &temp.0);
+    std::env::set_var("ORIVANTA_DATA_DIR", &temp.0);
     let mut source = fixture();
     source.catalog = selectable_catalog();
     let source_id = source.id.clone();

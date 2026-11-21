@@ -8,16 +8,16 @@ impl DataDirGuard {
     fn new() -> Self {
         let path = std::env::temp_dir().join(format!("antigravity-stable-id-{}", Uuid::new_v4()));
         fs::create_dir_all(&path).unwrap();
-        let previous = std::env::var_os("COCKPIT_TOOLS_TEST_DATA_DIR");
-        std::env::set_var("COCKPIT_TOOLS_TEST_DATA_DIR", &path);
+        let previous = std::env::var_os("ORIVANTA_TEST_DATA_DIR");
+        std::env::set_var("ORIVANTA_TEST_DATA_DIR", &path);
         Self { path, previous }
     }
 }
 impl Drop for DataDirGuard {
     fn drop(&mut self) {
         match &self.previous {
-            Some(value) => std::env::set_var("COCKPIT_TOOLS_TEST_DATA_DIR", value),
-            None => std::env::remove_var("COCKPIT_TOOLS_TEST_DATA_DIR"),
+            Some(value) => std::env::set_var("ORIVANTA_TEST_DATA_DIR", value),
+            None => std::env::remove_var("ORIVANTA_TEST_DATA_DIR"),
         }
         fs::remove_dir_all(&self.path).unwrap();
     }

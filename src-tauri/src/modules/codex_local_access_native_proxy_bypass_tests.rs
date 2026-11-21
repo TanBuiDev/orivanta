@@ -29,8 +29,8 @@ fn native_proxy_bypass_case(test_name: &str, scenario: &str) {
             "COCKPIT_TEST_NATIVE_PROXY_RESULT",
             directory.path().join("verified"),
         )
-        .env("COCKPIT_TOOLS_DATA_DIR", directory.path().join("data"))
-        .env("COCKPIT_TOOLS_TEST_DATA_DIR", directory.path().join("data"))
+        .env("ORIVANTA_DATA_DIR", directory.path().join("data"))
+        .env("ORIVANTA_TEST_DATA_DIR", directory.path().join("data"))
         .args([
             "--exact",
             &format!("modules::codex_local_access::native_transport_identity_tests::{test_name}"),

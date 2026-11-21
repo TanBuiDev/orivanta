@@ -442,8 +442,8 @@ struct PlanAccountDataDir {
 impl PlanAccountDataDir {
     fn new() -> Self {
         let root = tempfile::tempdir().unwrap();
-        let previous = std::env::var_os("COCKPIT_TOOLS_TEST_DATA_DIR");
-        std::env::set_var("COCKPIT_TOOLS_TEST_DATA_DIR", root.path());
+        let previous = std::env::var_os("ORIVANTA_TEST_DATA_DIR");
+        std::env::set_var("ORIVANTA_TEST_DATA_DIR", root.path());
         Self { root, previous }
     }
 }
@@ -451,9 +451,9 @@ impl PlanAccountDataDir {
 impl Drop for PlanAccountDataDir {
     fn drop(&mut self) {
         if let Some(previous) = &self.previous {
-            std::env::set_var("COCKPIT_TOOLS_TEST_DATA_DIR", previous);
+            std::env::set_var("ORIVANTA_TEST_DATA_DIR", previous);
         } else {
-            std::env::remove_var("COCKPIT_TOOLS_TEST_DATA_DIR");
+            std::env::remove_var("ORIVANTA_TEST_DATA_DIR");
         }
     }
 }

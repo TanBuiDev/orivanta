@@ -10,8 +10,8 @@ struct StorageFixture {
 impl StorageFixture {
     fn new() -> Self {
         let dir = tempfile::tempdir().unwrap();
-        let previous = std::env::var_os("COCKPIT_TOOLS_TEST_DATA_DIR");
-        std::env::set_var("COCKPIT_TOOLS_TEST_DATA_DIR", dir.path());
+        let previous = std::env::var_os("ORIVANTA_TEST_DATA_DIR");
+        std::env::set_var("ORIVANTA_TEST_DATA_DIR", dir.path());
         Self { dir, previous }
     }
 
@@ -52,8 +52,8 @@ impl StorageFixture {
 impl Drop for StorageFixture {
     fn drop(&mut self) {
         match &self.previous {
-            Some(previous) => std::env::set_var("COCKPIT_TOOLS_TEST_DATA_DIR", previous),
-            None => std::env::remove_var("COCKPIT_TOOLS_TEST_DATA_DIR"),
+            Some(previous) => std::env::set_var("ORIVANTA_TEST_DATA_DIR", previous),
+            None => std::env::remove_var("ORIVANTA_TEST_DATA_DIR"),
         }
     }
 }

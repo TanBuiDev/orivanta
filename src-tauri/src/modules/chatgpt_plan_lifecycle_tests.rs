@@ -78,7 +78,7 @@ impl Drop for Fixture {
         self.server.abort();
         for (key, value) in [
             (
-                "COCKPIT_TOOLS_TEST_DATA_DIR",
+                "ORIVANTA_TEST_DATA_DIR",
                 self.previous_directory.take(),
             ),
             ("CHATGPT_PLAN_TEST_SERVER", self.previous_server.take()),
@@ -98,9 +98,9 @@ impl Fixture {
         let directory =
             std::env::temp_dir().join(format!("chatgpt-plan-test-{}", uuid::Uuid::new_v4()));
         std::fs::create_dir_all(&directory).unwrap();
-        let previous_directory = std::env::var_os("COCKPIT_TOOLS_TEST_DATA_DIR");
+        let previous_directory = std::env::var_os("ORIVANTA_TEST_DATA_DIR");
         let previous_server = std::env::var_os("CHATGPT_PLAN_TEST_SERVER");
-        std::env::set_var("COCKPIT_TOOLS_TEST_DATA_DIR", &directory);
+        std::env::set_var("ORIVANTA_TEST_DATA_DIR", &directory);
         let listener = tokio::net::TcpListener::bind("127.0.0.1:0").await.unwrap();
         let base = format!("http://{}", listener.local_addr().unwrap());
         std::env::set_var("CHATGPT_PLAN_TEST_SERVER", &base);

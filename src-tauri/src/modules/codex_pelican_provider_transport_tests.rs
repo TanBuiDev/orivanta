@@ -11,8 +11,8 @@ impl TestData {
             std::env::temp_dir().join(format!("pelican-provider-test-{}", uuid::Uuid::new_v4()));
         std::fs::create_dir_all(&dir).unwrap();
         let previous = [
-            "COCKPIT_TOOLS_TEST_DATA_DIR",
-            "COCKPIT_TOOLS_DATA_DIR",
+            "ORIVANTA_TEST_DATA_DIR",
+            "ORIVANTA_DATA_DIR",
             "CODEX_HOME",
         ]
         .into_iter()

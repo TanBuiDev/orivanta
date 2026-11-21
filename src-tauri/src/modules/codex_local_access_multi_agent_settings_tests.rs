@@ -105,9 +105,9 @@ struct TestData {
 impl TestData {
     fn new() -> Self {
         let directory = tempfile::tempdir().unwrap();
-        let previous = std::env::var_os("COCKPIT_TOOLS_TEST_DATA_DIR");
+        let previous = std::env::var_os("ORIVANTA_TEST_DATA_DIR");
         let previous_server = std::env::var_os("CHATGPT_PLAN_TEST_SERVER");
-        std::env::set_var("COCKPIT_TOOLS_TEST_DATA_DIR", directory.path());
+        std::env::set_var("ORIVANTA_TEST_DATA_DIR", directory.path());
         std::env::set_var("CHATGPT_PLAN_TEST_SERVER", "http://127.0.0.1:9");
         Self {
             _directory: directory,
@@ -119,7 +119,7 @@ impl TestData {
 impl Drop for TestData {
     fn drop(&mut self) {
         for (name, value) in [
-            ("COCKPIT_TOOLS_TEST_DATA_DIR", &self.previous),
+            ("ORIVANTA_TEST_DATA_DIR", &self.previous),
             ("CHATGPT_PLAN_TEST_SERVER", &self.previous_server),
         ] {
             if let Some(value) = value {

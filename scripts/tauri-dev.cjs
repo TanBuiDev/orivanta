@@ -24,9 +24,9 @@ function resolveMacosSdkRoot() {
 
 const env = {
   ...process.env,
-  COCKPIT_TOOLS_PROFILE: process.env.COCKPIT_TOOLS_PROFILE || 'dev',
-  COCKPIT_TOOLS_API_PORT: process.env.COCKPIT_TOOLS_API_PORT || '1456',
-  VITE_COCKPIT_TOOLS_PROFILE: process.env.VITE_COCKPIT_TOOLS_PROFILE || 'dev',
+  ORIVANTA_PROFILE: process.env.ORIVANTA_PROFILE || 'dev',
+  ORIVANTA_API_PORT: process.env.ORIVANTA_API_PORT || '1471',
+  VITE_ORIVANTA_PROFILE: process.env.VITE_ORIVANTA_PROFILE || 'dev',
 };
 const macosSdkRoot = resolveMacosSdkRoot();
 if (macosSdkRoot) {

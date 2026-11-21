@@ -14,9 +14,9 @@ struct Fixture {
 impl Drop for Fixture {
     fn drop(&mut self) {
         if let Some(previous) = &self.previous {
-            std::env::set_var("COCKPIT_TOOLS_TEST_DATA_DIR", previous);
+            std::env::set_var("ORIVANTA_TEST_DATA_DIR", previous);
         } else {
-            std::env::remove_var("COCKPIT_TOOLS_TEST_DATA_DIR");
+            std::env::remove_var("ORIVANTA_TEST_DATA_DIR");
         }
     }
 }
@@ -24,8 +24,8 @@ impl Drop for Fixture {
 impl Fixture {
     fn new() -> Self {
         let directory = tempfile::tempdir().unwrap();
-        let previous = std::env::var_os("COCKPIT_TOOLS_TEST_DATA_DIR");
-        std::env::set_var("COCKPIT_TOOLS_TEST_DATA_DIR", directory.path());
+        let previous = std::env::var_os("ORIVANTA_TEST_DATA_DIR");
+        std::env::set_var("ORIVANTA_TEST_DATA_DIR", directory.path());
         let mut source = CodexAccount::new(
             "official-fallback-source".into(),
             "fallback@example.invalid".into(),

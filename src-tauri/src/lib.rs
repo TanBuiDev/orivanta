@@ -42,7 +42,7 @@ pub fn try_run_codex_cli_resume() -> Option<i32> {
         (Some(instance), Some(data_dir), Some(codex_home), None) => {
             // Login shells can have a different Cockpit profile or CODEX_HOME.
             // This runs before Cockpit initializes any config or worker threads.
-            std::env::set_var("COCKPIT_TOOLS_DATA_DIR", data_dir);
+            std::env::set_var("ORIVANTA_DATA_DIR", data_dir);
             std::env::set_var("CODEX_HOME", &codex_home);
             run_from_terminal(&instance, std::path::Path::new(&codex_home))
         }
@@ -482,7 +482,7 @@ pub fn run() {
             }
         }))
         .setup(|app| {
-            info!("Cockpit Tools 启动...");
+            info!("Orivanta 启动...");
             let current_exe = std::env::current_exe()
                 .map(|path| path.display().to_string())
                 .unwrap_or_else(|err| format!("unknown: {}", err));
@@ -506,9 +506,12 @@ pub fn run() {
                 logger::log_warn(&format!("[Lifecycle] 安装系统关机监听失败: {}", err));
             }
 
+            let app_identifier = app.config().identifier.clone();
             // 启动时清理 WebKit LocalStorage WAL，防止无限膨胀
-            std::thread::spawn(|| {
-                modules::webkit_cache_maintenance::checkpoint_webkit_localstorage();
+            std::thread::spawn(move || {
+                modules::webkit_cache_maintenance::checkpoint_webkit_localstorage(
+                    &app_identifier,
+                );
                 modules::workbuddy_auto_checkin::schedule_log_migration();
                 modules::trae_auto_checkin::schedule_log_migration();
                 modules::minimax_code_auto_checkin::schedule_log_migration();
@@ -532,21 +535,6 @@ pub fn run() {
                 modules::kiro_account::schedule_identity_maintenance();
                 modules::windsurf_account::schedule_identity_maintenance();
                 modules::trae_account::schedule_identity_maintenance();
-            });
-
-            // 当前主线不再使用 platform-packages；启动时回收旧版本遗留的孤儿 adapter。
-            std::thread::spawn(|| {
-                match modules::process::close_orphaned_legacy_platform_adapter_processes(5) {
-                    Ok(0) => {}
-                    Ok(count) => logger::log_info(&format!(
-                        "[LegacyAdapterCleanup] 已清理旧平台 adapter 进程: count={}",
-                        count
-                    )),
-                    Err(err) => logger::log_warn(&format!(
-                        "[LegacyAdapterCleanup] 清理旧平台 adapter 进程失败: {}",
-                        err
-                    )),
-                }
             });
 
             // 一次性迁移：历史版本可能被自动开启的「模型管理」统一关闭，之后由用户自己决定。
@@ -573,17 +561,14 @@ pub fn run() {
                 }
             });
 
-            // 初始化 Updater 插件
+            // The Orivanta updater remains disabled until its own signing channel is ready.
             #[cfg(desktop)]
             {
-                app.handle()
-                    .plugin(tauri_plugin_updater::Builder::new().build())?;
                 app.handle().plugin(tauri_plugin_process::init())?;
                 app.handle().plugin(tauri_plugin_autostart::init(
                     tauri_plugin_autostart::MacosLauncher::LaunchAgent,
                     None::<Vec<&'static str>>,
                 ))?;
-                info!("[Updater] Tauri Updater + Process 插件已初始化");
             }
 
             // 启动时同步设置合并（移至后台线程，不阻塞窗口显示）
@@ -1176,7 +1161,6 @@ pub fn run() {
             commands::update::save_pending_update_notes,
             commands::update::update_log,
             commands::update::get_update_runtime_info,
-            commands::update::install_linux_update,
             commands::update::relaunch_after_update,
             // Announcement Commands
             commands::announcement::announcement_get_state,

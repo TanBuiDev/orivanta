@@ -924,13 +924,13 @@ mod tests {
     #[cfg(unix)]
     impl PublicHomeGuard {
         fn new(home: &Path) -> Self {
-            let keys = ["HOME", "COCKPIT_TOOLS_DATA_DIR"];
+            let keys = ["HOME", "ORIVANTA_DATA_DIR"];
             let previous = keys
                 .into_iter()
                 .map(|key| (key, std::env::var_os(key)))
                 .collect();
             std::env::set_var("HOME", home);
-            std::env::remove_var("COCKPIT_TOOLS_DATA_DIR");
+            std::env::remove_var("ORIVANTA_DATA_DIR");
             Self(previous)
         }
     }
@@ -950,14 +950,14 @@ mod tests {
     fn stability_imported_managed_child_unregisters_and_created_owner_requires_matching_id() {
         let _lock = modules::test_support::env_lock().lock().unwrap();
         let fixture = Fixture::new();
-        let previous = std::env::var_os("COCKPIT_TOOLS_TEST_DATA_DIR");
-        std::env::set_var("COCKPIT_TOOLS_TEST_DATA_DIR", &fixture.0);
+        let previous = std::env::var_os("ORIVANTA_TEST_DATA_DIR");
+        std::env::set_var("ORIVANTA_TEST_DATA_DIR", &fixture.0);
         struct Restore(Option<std::ffi::OsString>);
         impl Drop for Restore {
             fn drop(&mut self) {
                 match &self.0 {
-                    Some(v) => std::env::set_var("COCKPIT_TOOLS_TEST_DATA_DIR", v),
-                    None => std::env::remove_var("COCKPIT_TOOLS_TEST_DATA_DIR"),
+                    Some(v) => std::env::set_var("ORIVANTA_TEST_DATA_DIR", v),
+                    None => std::env::remove_var("ORIVANTA_TEST_DATA_DIR"),
                 }
             }
         }
@@ -1139,8 +1139,8 @@ mod tests {
             .unwrap_or_else(|error| error.into_inner());
         let fixture = Fixture::new();
         let _home = PublicHomeGuard::new(&fixture.0);
-        let legacy = fixture.0.join(".antigravity_cockpit");
-        let alias = fixture.0.join(".cockpit_tools");
+        let legacy = fixture.0.join(".orivanta_legacy");
+        let alias = fixture.0.join(".orivanta");
         let legacy_root = legacy.join("instances/codex");
         fs::create_dir_all(legacy_root.join("profile")).unwrap();
         std::os::unix::fs::symlink(&legacy, &alias).unwrap();
@@ -1178,8 +1178,8 @@ mod tests {
             .unwrap_or_else(|error| error.into_inner());
         let fixture = Fixture::new();
         let _home = PublicHomeGuard::new(&fixture.0);
-        let legacy = fixture.0.join(".antigravity_cockpit");
-        let alias = fixture.0.join(".cockpit_tools");
+        let legacy = fixture.0.join(".orivanta_legacy");
+        let alias = fixture.0.join(".orivanta");
         let outside = fixture.0.join("outside");
         fs::create_dir_all(legacy.join("instances/codex")).unwrap();
         fs::create_dir_all(outside.join("profile")).unwrap();
@@ -1216,8 +1216,8 @@ mod tests {
             .unwrap_or_else(|error| error.into_inner());
         let fixture = Fixture::new();
         let _home = PublicHomeGuard::new(&fixture.0);
-        let legacy = fixture.0.join(".antigravity_cockpit");
-        let alias = fixture.0.join(".cockpit_tools");
+        let legacy = fixture.0.join(".orivanta_legacy");
+        let alias = fixture.0.join(".orivanta");
         let outside = fixture.0.join("outside");
         fs::create_dir(&legacy).unwrap();
         fs::create_dir_all(outside.join("instances/codex/profile")).unwrap();
@@ -1254,8 +1254,8 @@ mod tests {
         let fixture = Fixture::new();
         let _home = PublicHomeGuard::new(&fixture.0);
         let root = fixture.root();
-        let fake_legacy = root.root.join(".antigravity_cockpit");
-        let fake_alias = root.root.join(".cockpit_tools");
+        let fake_legacy = root.root.join(".orivanta_legacy");
+        let fake_alias = root.root.join(".orivanta");
         fs::create_dir_all(&fake_legacy).unwrap();
         std::os::unix::fs::symlink(&fake_legacy, &fake_alias).unwrap();
         assert_eq!(
@@ -1273,11 +1273,11 @@ mod tests {
             .unwrap_or_else(|error| error.into_inner());
         let fixture = Fixture::new();
         let _home = PublicHomeGuard::new(&fixture.0);
-        let legacy = fixture.0.join(".antigravity_cockpit");
-        let alias = fixture.0.join(".cockpit_tools");
+        let legacy = fixture.0.join(".orivanta_legacy");
+        let alias = fixture.0.join(".orivanta");
         fs::create_dir_all(legacy.join("instances/codex/profile")).unwrap();
         std::os::unix::fs::symlink(&legacy, &alias).unwrap();
-        std::env::set_var("COCKPIT_TOOLS_DATA_DIR", &alias);
+        std::env::set_var("ORIVANTA_DATA_DIR", &alias);
         let root = alias.join("instances/codex");
         assert_eq!(
             modules::data_paths::without_compatibility_alias(&root),
@@ -1331,13 +1331,13 @@ mod tests {
         impl Drop for RestoreDataDir {
             fn drop(&mut self) {
                 match &self.0 {
-                    Some(value) => std::env::set_var("COCKPIT_TOOLS_TEST_DATA_DIR", value),
-                    None => std::env::remove_var("COCKPIT_TOOLS_TEST_DATA_DIR"),
+                    Some(value) => std::env::set_var("ORIVANTA_TEST_DATA_DIR", value),
+                    None => std::env::remove_var("ORIVANTA_TEST_DATA_DIR"),
                 }
             }
         }
-        let _restore = RestoreDataDir(std::env::var_os("COCKPIT_TOOLS_TEST_DATA_DIR"));
-        std::env::set_var("COCKPIT_TOOLS_TEST_DATA_DIR", fixture.0.join("app-data"));
+        let _restore = RestoreDataDir(std::env::var_os("ORIVANTA_TEST_DATA_DIR"));
+        std::env::set_var("ORIVANTA_TEST_DATA_DIR", fixture.0.join("app-data"));
         let external = fixture.0.join("my-projects");
         fs::create_dir_all(&external).unwrap();
         fs::write(external.join("keep.txt"), "user-owned content").unwrap();

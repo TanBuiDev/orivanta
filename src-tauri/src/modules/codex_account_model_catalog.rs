@@ -7,7 +7,7 @@ pub fn get_codex_home() -> PathBuf {
     // no test may inspect the developer's active Codex credentials.
     #[cfg(test)]
     if std::env::var_os("CHATGPT_PLAN_TEST_SERVER").is_some() {
-        if let Some(root) = std::env::var_os("COCKPIT_TOOLS_TEST_DATA_DIR") {
+        if let Some(root) = std::env::var_os("ORIVANTA_TEST_DATA_DIR") {
             return PathBuf::from(root).join("chatgpt-plan-test-codex-home");
         }
     }

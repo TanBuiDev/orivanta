@@ -3,7 +3,7 @@
 use crate::modules::antigravity_account_index_store::IndexRead as CodexIndexRead;
 use crate::modules::codex_account_index_store::CodexIndexStore;
 
-/// 获取我们的多账号存储路径（使用公共数据目录入口 ~/.cockpit_tools/，兼容旧目录）
+/// 获取我们的多账号存储路径（使用公共数据目录入口 ~/.orivanta/，兼容旧目录）
 fn get_accounts_storage_path() -> PathBuf {
     let data_dir = account::get_data_dir().unwrap_or_else(|_| {
         crate::modules::data_paths::fallback_data_dir()
@@ -13,7 +13,7 @@ fn get_accounts_storage_path() -> PathBuf {
     data_dir.join("codex_accounts.json")
 }
 
-/// 获取账号详情存储目录（使用公共数据目录入口 ~/.cockpit_tools/，兼容旧目录；账号文件位于 codex_accounts/）
+/// 获取账号详情存储目录（使用公共数据目录入口 ~/.orivanta/，兼容旧目录；账号文件位于 codex_accounts/）
 fn get_accounts_dir() -> PathBuf {
     let data_dir = account::get_data_dir().unwrap_or_else(|_| {
         crate::modules::data_paths::fallback_data_dir()

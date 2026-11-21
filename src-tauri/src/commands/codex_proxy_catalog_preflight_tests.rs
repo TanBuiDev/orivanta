@@ -26,7 +26,7 @@ impl DataDir {
         let path =
             std::env::temp_dir().join(format!("proxy-prerequisite-{}", uuid::Uuid::new_v4()));
         fs::create_dir_all(path.join("proxy-engine")).unwrap();
-        let previous = ["COCKPIT_TOOLS_TEST_DATA_DIR", "COCKPIT_TOOLS_DATA_DIR"]
+        let previous = ["ORIVANTA_TEST_DATA_DIR", "ORIVANTA_DATA_DIR"]
             .into_iter()
             .map(|key| {
                 let old = std::env::var_os(key);

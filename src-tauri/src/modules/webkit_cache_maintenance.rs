@@ -1,11 +1,15 @@
 use rusqlite::Connection;
 use std::path::PathBuf;
 
-fn webkit_data_root() -> Option<PathBuf> {
+fn webkit_data_root(_identifier: &str) -> Option<PathBuf> {
     #[cfg(target_os = "macos")]
     {
         let home = dirs::home_dir()?;
-        Some(home.join("Library/WebKit/com.jlcodes.cockpit-tools/WebsiteData"))
+        Some(
+            home.join("Library/WebKit")
+                .join(_identifier)
+                .join("WebsiteData"),
+        )
     }
     #[cfg(not(target_os = "macos"))]
     {
@@ -40,8 +44,8 @@ fn find_localstorage_dbs(root: &std::path::Path) -> Vec<PathBuf> {
 /// ~5 MB of actual data.
 ///
 /// Running this at startup keeps the WAL from accumulating over time.
-pub fn checkpoint_webkit_localstorage() {
-    let Some(root) = webkit_data_root() else {
+pub fn checkpoint_webkit_localstorage(identifier: &str) {
+    let Some(root) = webkit_data_root(identifier) else {
         return;
     };
     if !root.exists() {

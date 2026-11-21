@@ -2346,8 +2346,8 @@ struct CursorTestDataDir {
 impl CursorTestDataDir {
     fn new() -> Self {
         let directory = tempfile::tempdir().unwrap();
-        let previous = std::env::var_os("COCKPIT_TOOLS_TEST_DATA_DIR");
-        std::env::set_var("COCKPIT_TOOLS_TEST_DATA_DIR", directory.path());
+        let previous = std::env::var_os("ORIVANTA_TEST_DATA_DIR");
+        std::env::set_var("ORIVANTA_TEST_DATA_DIR", directory.path());
         Self {
             _directory: directory,
             previous,
@@ -2359,9 +2359,9 @@ impl CursorTestDataDir {
 impl Drop for CursorTestDataDir {
     fn drop(&mut self) {
         if let Some(value) = self.previous.take() {
-            std::env::set_var("COCKPIT_TOOLS_TEST_DATA_DIR", value);
+            std::env::set_var("ORIVANTA_TEST_DATA_DIR", value);
         } else {
-            std::env::remove_var("COCKPIT_TOOLS_TEST_DATA_DIR");
+            std::env::remove_var("ORIVANTA_TEST_DATA_DIR");
         }
     }
 }

@@ -386,10 +386,10 @@ impl ModelConfigTestEnvironment {
         let dir = temp_dir();
         let data = dir.join("data");
         fs::create_dir_all(&data).unwrap();
-        let previous_data = std::env::var_os("COCKPIT_TOOLS_DATA_DIR");
-        let previous_test_data = std::env::var_os("COCKPIT_TOOLS_TEST_DATA_DIR");
-        std::env::set_var("COCKPIT_TOOLS_DATA_DIR", &data);
-        std::env::set_var("COCKPIT_TOOLS_TEST_DATA_DIR", &data);
+        let previous_data = std::env::var_os("ORIVANTA_DATA_DIR");
+        let previous_test_data = std::env::var_os("ORIVANTA_TEST_DATA_DIR");
+        std::env::set_var("ORIVANTA_DATA_DIR", &data);
+        std::env::set_var("ORIVANTA_TEST_DATA_DIR", &data);
         Self {
             dir,
             previous_data,
@@ -401,8 +401,8 @@ impl ModelConfigTestEnvironment {
 impl Drop for ModelConfigTestEnvironment {
     fn drop(&mut self) {
         for (name, previous) in [
-            ("COCKPIT_TOOLS_DATA_DIR", &self.previous_data),
-            ("COCKPIT_TOOLS_TEST_DATA_DIR", &self.previous_test_data),
+            ("ORIVANTA_DATA_DIR", &self.previous_data),
+            ("ORIVANTA_TEST_DATA_DIR", &self.previous_test_data),
         ] {
             if let Some(value) = previous {
                 std::env::set_var(name, value);

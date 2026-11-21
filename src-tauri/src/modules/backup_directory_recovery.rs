@@ -10,9 +10,9 @@ use std::path::{Path, PathBuf};
 const OVERRIDE_SUFFIX: &str = ".backup-directory.json";
 const MAX_OVERRIDE_BYTES: u64 = 128 * 1024;
 const DATA_ROOT_ENV_KEYS: [&str; 3] = [
-    "COCKPIT_TOOLS_TEST_DATA_DIR",
-    "COCKPIT_TEST_DATA_DIR",
-    "COCKPIT_TOOLS_DATA_DIR",
+    "ORIVANTA_TEST_DATA_DIR",
+    "ORIVANTA_LEGACY_TEST_DATA_DIR",
+    "ORIVANTA_DATA_DIR",
 ];
 
 #[derive(Serialize, Deserialize)]
@@ -54,7 +54,7 @@ fn override_path() -> Result<PathBuf, String> {
         if let Some(root) = crate::modules::data_paths::active_custom_data_dir()? {
             // A drive root has no sibling directory in which to store its preference.
             return if root.file_name().is_none() {
-                Ok(root.join(".cockpit_tools.backup-directory.json"))
+                Ok(root.join(".orivanta.backup-directory.json"))
             } else {
                 adjacent_override_path(&root)
             };
@@ -233,7 +233,7 @@ mod tests {
         }
 
         fn preference(&self) -> PathBuf {
-            adjacent_override_path(&self.0.join(".cockpit_tools")).unwrap()
+            adjacent_override_path(&self.0.join(".orivanta")).unwrap()
         }
 
         fn save(&self, target: &Path) -> Result<(), String> {
@@ -250,7 +250,7 @@ mod tests {
     #[test]
     fn reloads_persisted_directory_without_touching_unavailable_data_root() {
         let root = TestRoot::new();
-        let blocked = root.0.join(".cockpit_tools");
+        let blocked = root.0.join(".orivanta");
         fs::write(&blocked, b"existing data root blocker").unwrap();
         let target = root.0.join("backups");
         root.save(&target).unwrap();
@@ -311,7 +311,7 @@ mod tests {
     #[test]
     fn explicit_recovery_replaces_corrupt_preference_and_keeps_a_backup() {
         let root = TestRoot::new();
-        let blocked = root.0.join(".cockpit_tools");
+        let blocked = root.0.join(".orivanta");
         fs::write(&blocked, b"existing data root blocker").unwrap();
         fs::write(root.preference(), b"damaged json").unwrap();
         assert!(override_exists_at(&root.preference()).unwrap());
@@ -320,7 +320,7 @@ mod tests {
         root.save(&target).unwrap();
         assert_eq!(read_override_at(&root.preference()).unwrap(), Some(target));
         assert_eq!(
-            fs::read(root.0.join(".cockpit_tools.backup-directory.json.bak")).unwrap(),
+            fs::read(root.0.join(".orivanta.backup-directory.json.bak")).unwrap(),
             b"damaged json",
         );
         assert_eq!(fs::read(blocked).unwrap(), b"existing data root blocker");
@@ -329,14 +329,14 @@ mod tests {
     #[test]
     fn isolates_profiles_and_environment_roots_with_account_priority() {
         let root = TestRoot::new();
-        let production = adjacent_override_path(&root.0.join(".cockpit_tools")).unwrap();
-        let dev = adjacent_override_path(&root.0.join(".cockpit_tools_dev")).unwrap();
+        let production = adjacent_override_path(&root.0.join(".orivanta")).unwrap();
+        let dev = adjacent_override_path(&root.0.join(".orivanta_dev")).unwrap();
         let custom = adjacent_override_path(&root.0.join("custom")).unwrap();
         assert_ne!(production, dev);
         assert_ne!(production, custom);
         assert_eq!(
             production,
-            root.0.join(".cockpit_tools.backup-directory.json")
+            root.0.join(".orivanta.backup-directory.json")
         );
         assert_eq!(custom, root.0.join("custom.backup-directory.json"));
         let values = [Some("  test  "), Some("legacy-test"), Some("custom")];
@@ -349,9 +349,9 @@ mod tests {
         );
         assert_eq!(
             environment_data_root(|key| match key {
-                "COCKPIT_TOOLS_TEST_DATA_DIR" => Some("  ".into()),
-                "COCKPIT_TEST_DATA_DIR" => Some("legacy-test".into()),
-                "COCKPIT_TOOLS_DATA_DIR" => Some("custom".into()),
+                "ORIVANTA_TEST_DATA_DIR" => Some("  ".into()),
+                "ORIVANTA_LEGACY_TEST_DATA_DIR" => Some("legacy-test".into()),
+                "ORIVANTA_DATA_DIR" => Some("custom".into()),
                 _ => None,
             }),
             Some(PathBuf::from("legacy-test")),

@@ -735,7 +735,7 @@ fn default_diagnostics_error_reporting_debug() -> bool {
     false
 }
 fn default_language() -> String {
-    "zh-cn".to_string()
+    "vi".to_string()
 }
 fn default_default_terminal() -> String {
     "system".to_string()
@@ -1023,7 +1023,7 @@ pub fn default_webdav_sync_password() -> String {
     String::new()
 }
 pub fn default_webdav_sync_remote_dir() -> String {
-    "cockpit-tools".to_string()
+    "orivanta".to_string()
 }
 pub fn default_webdav_sync_retention_days() -> i32 {
     15
@@ -2992,7 +2992,7 @@ mod tests {
             .lock()
             .unwrap_or_else(|error| error.into_inner());
         let data_dir = make_temp_dir("config_startup_minimized_migrate");
-        std::env::set_var("COCKPIT_TOOLS_TEST_DATA_DIR", &data_dir);
+        std::env::set_var("ORIVANTA_TEST_DATA_DIR", &data_dir);
 
         let config_path = data_dir.join("config.json");
         fs::write(
@@ -3031,7 +3031,7 @@ mod tests {
         assert!(reloaded.startup_minimized);
         assert!(reloaded.startup_minimized_default_off_migrated);
 
-        std::env::remove_var("COCKPIT_TOOLS_TEST_DATA_DIR");
+        std::env::remove_var("ORIVANTA_TEST_DATA_DIR");
         fs::remove_dir_all(data_dir).expect("remove temp dir");
     }
 
@@ -3080,7 +3080,7 @@ mod tests {
             .lock()
             .unwrap_or_else(|error| error.into_inner());
         let dir = tempfile::tempdir().expect("create config directory");
-        std::env::set_var("COCKPIT_TOOLS_TEST_DATA_DIR", dir.path());
+        std::env::set_var("ORIVANTA_TEST_DATA_DIR", dir.path());
         let path = dir.path().join("config.json");
         fs::write(
             &path,
@@ -3121,7 +3121,7 @@ mod tests {
             assert!(!reloaded.codex_app_api_quota_compat_enabled);
             assert_eq!(reloaded.language, "ja");
         }
-        std::env::remove_var("COCKPIT_TOOLS_TEST_DATA_DIR");
+        std::env::remove_var("ORIVANTA_TEST_DATA_DIR");
     }
 
     #[test]
@@ -3182,7 +3182,7 @@ mod tests {
         assert_eq!(cfg.webdav_sync_url, "https://dav.jianguoyun.com/dav/");
         assert_eq!(cfg.webdav_sync_username, "");
         assert_eq!(cfg.webdav_sync_password, "");
-        assert_eq!(cfg.webdav_sync_remote_dir, "cockpit-tools");
+        assert_eq!(cfg.webdav_sync_remote_dir, "orivanta");
         assert_eq!(cfg.webdav_sync_last_upload_at, None);
         assert_eq!(cfg.webdav_sync_last_upload_file_name, None);
         assert_eq!(cfg.webdav_sync_last_download_at, None);
@@ -3195,7 +3195,7 @@ mod tests {
             serde_json::from_value(serde_json::json!({})).expect("反序列化默认配置应成功");
         assert!(cfg.webdav_sync_enabled);
         assert_eq!(cfg.webdav_sync_url, "https://dav.jianguoyun.com/dav/");
-        assert_eq!(cfg.webdav_sync_remote_dir, "cockpit-tools");
+        assert_eq!(cfg.webdav_sync_remote_dir, "orivanta");
     }
 
     #[test]

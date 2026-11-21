@@ -22,18 +22,18 @@ impl NativeInstallationTestData {
     pub(super) fn new() -> Self {
         let directory = tempfile::tempdir().unwrap();
         let previous = [
-            std::env::var_os("COCKPIT_TOOLS_TEST_DATA_DIR"),
-            std::env::var_os("COCKPIT_TOOLS_DATA_DIR"),
+            std::env::var_os("ORIVANTA_TEST_DATA_DIR"),
+            std::env::var_os("ORIVANTA_DATA_DIR"),
         ];
-        std::env::set_var("COCKPIT_TOOLS_TEST_DATA_DIR", directory.path());
-        std::env::set_var("COCKPIT_TOOLS_DATA_DIR", directory.path());
+        std::env::set_var("ORIVANTA_TEST_DATA_DIR", directory.path());
+        std::env::set_var("ORIVANTA_DATA_DIR", directory.path());
         Self { _directory: directory, previous }
     }
 }
 
 impl Drop for NativeInstallationTestData {
     fn drop(&mut self) {
-        for (key, previous) in ["COCKPIT_TOOLS_TEST_DATA_DIR", "COCKPIT_TOOLS_DATA_DIR"]
+        for (key, previous) in ["ORIVANTA_TEST_DATA_DIR", "ORIVANTA_DATA_DIR"]
             .into_iter().zip(&self.previous)
         {
             if let Some(previous) = previous {

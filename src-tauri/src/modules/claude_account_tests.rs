@@ -730,14 +730,14 @@ fn desktop_login_component_cleanup_removes_only_owned_cache_dirs() {
         let snapshot_id = "claude_desktop_0b1d3d4df02c2376d62a623bb8c67332";
         assert_eq!(
             desktop_profile_snapshot_id_from_path(Path::new(
-                r"C:\Users\Lenovo\.antigravity_cockpit\claude_desktop_profiles\claude_desktop_0b1d3d4df02c2376d62a623bb8c67332"
+                r"C:\Users\Lenovo\.orivanta_legacy\claude_desktop_profiles\claude_desktop_0b1d3d4df02c2376d62a623bb8c67332"
             ))
             .as_deref(),
             Some(snapshot_id)
         );
         assert_eq!(
             desktop_profile_snapshot_id_from_path(Path::new(
-                r"C:\Users\Lenovo.antigravity_cockpit\claude_desktop_profiles\claude_desktop_0b1d3d4df02c2376d62a623bb8c67332"
+                r"C:\Users\Lenovo.orivanta_legacy\claude_desktop_profiles\claude_desktop_0b1d3d4df02c2376d62a623bb8c67332"
             ))
             .as_deref(),
             Some(snapshot_id)
@@ -769,7 +769,7 @@ fn desktop_login_component_cleanup_removes_only_owned_cache_dirs() {
 
     #[test]
     fn claude_deduplication_updates_sqlite_before_removing_details() {
-        const DATA_ROOT: &str = "COCKPIT_TOOLS_TEST_DATA_DIR";
+        const DATA_ROOT: &str = "ORIVANTA_TEST_DATA_DIR";
         struct RestoreDataRoot(Option<std::ffi::OsString>);
         impl Drop for RestoreDataRoot {
             fn drop(&mut self) {
@@ -808,7 +808,7 @@ fn desktop_login_component_cleanup_removes_only_owned_cache_dirs() {
 
     #[test]
     fn claude_cli_user_settings_preserve_unrelated_values_and_reject_malformed_env() {
-        const DATA_ROOT: &str = "COCKPIT_TOOLS_TEST_DATA_DIR";
+        const DATA_ROOT: &str = "ORIVANTA_TEST_DATA_DIR";
         struct RestoreDataRoot(Option<std::ffi::OsString>);
         impl Drop for RestoreDataRoot {
             fn drop(&mut self) {

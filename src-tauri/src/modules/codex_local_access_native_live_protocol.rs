@@ -211,7 +211,7 @@ async fn native_live_protocol_acceptance() -> Result<(), Box<dyn std::error::Err
             .ok();
     }
     let data = PathBuf::from(
-        std::env::var_os("COCKPIT_TOOLS_TEST_DATA_DIR")
+        std::env::var_os("ORIVANTA_TEST_DATA_DIR")
             .ok_or("Missing explicit real data directory")?,
     );
     if crate::modules::account::get_data_dir()?.canonicalize()? != data.canonicalize()? {

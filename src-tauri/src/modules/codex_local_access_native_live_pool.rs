@@ -322,7 +322,7 @@ fn read_private_config() -> Result<Config, Box<dyn std::error::Error>> {
 async fn native_pool_process_driver() -> Result<(), Box<dyn std::error::Error>> {
     let config = read_private_config()?;
     let snapshot = PathBuf::from(
-        std::env::var_os("COCKPIT_TOOLS_TEST_DATA_DIR")
+        std::env::var_os("ORIVANTA_TEST_DATA_DIR")
             .ok_or("Pool acceptance requires an explicit private data snapshot")?,
     )
     .canonicalize()?;
@@ -421,7 +421,7 @@ async fn native_pool_process_driver() -> Result<(), Box<dyn std::error::Error>> 
 async fn native_pool_live_prepare_credentials() -> Result<(), Box<dyn std::error::Error>> {
     let config = read_private_config()?;
     let data = PathBuf::from(
-        std::env::var_os("COCKPIT_TOOLS_TEST_DATA_DIR")
+        std::env::var_os("ORIVANTA_TEST_DATA_DIR")
             .ok_or("Credential preparation requires an explicit real account data directory")?,
     )
     .canonicalize()?;

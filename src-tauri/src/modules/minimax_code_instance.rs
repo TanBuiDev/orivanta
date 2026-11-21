@@ -710,7 +710,7 @@ mod minimax_code_instance_tests {
     struct RestoreEnv(Vec<(&'static str, Option<std::ffi::OsString>)>);
     impl RestoreEnv {
         fn capture() -> Self {
-            Self(["MINIMAX_DATA_DIR", "MAVIS_DATA_DIR", "COCKPIT_TOOLS_DATA_DIR", "COCKPIT_TOOLS_TEST_DATA_DIR"]
+            Self(["MINIMAX_DATA_DIR", "MAVIS_DATA_DIR", "ORIVANTA_DATA_DIR", "ORIVANTA_TEST_DATA_DIR"]
                 .into_iter().map(|key| (key, std::env::var_os(key))).collect())
         }
     }
@@ -913,25 +913,25 @@ mod minimax_code_instance_tests {
     /// 布局与生产一致：`<data root>/instances/minimax_code/<instance_id>`。
     /// 这样 `record_creation` 推导出的根正好落在受管实例存储下，删除守卫才会放行。
     ///
-    /// 通过 `COCKPIT_TOOLS_DATA_DIR` 把数据根指向临时目录：单测构建里
+    /// 通过 `ORIVANTA_DATA_DIR` 把数据根指向临时目录：单测构建里
     /// `account::get_data_dir()` 走 `test_support::fallback_data_dir()`，而
-    /// `data_paths::managed_instances_root_dir()` 仍解析 `%APPDATA%\.cockpit_tools`，
+    /// `data_paths::managed_instances_root_dir()` 仍解析 `%APPDATA%\.orivanta`，
     /// 两者不一致会让删除守卫找不到受管根。生产构建里两者同源，不存在该差异。
     #[test]
     fn create_and_delete_empty_instance_uses_managed_root() {
         let _env_lock = crate::modules::test_support::env_lock().lock().unwrap_or_else(|e| e.into_inner());
         let _restore = RestoreEnv::capture();
         let temp_root = temp_data_dir("managed-round-trip");
-        let previous = std::env::var("COCKPIT_TOOLS_DATA_DIR").ok();
-        let previous_test = std::env::var("COCKPIT_TOOLS_TEST_DATA_DIR").ok();
-        std::env::set_var("COCKPIT_TOOLS_DATA_DIR", &temp_root);
-        std::env::set_var("COCKPIT_TOOLS_TEST_DATA_DIR", &temp_root);
+        let previous = std::env::var("ORIVANTA_DATA_DIR").ok();
+        let previous_test = std::env::var("ORIVANTA_TEST_DATA_DIR").ok();
+        std::env::set_var("ORIVANTA_DATA_DIR", &temp_root);
+        std::env::set_var("ORIVANTA_TEST_DATA_DIR", &temp_root);
 
         let root = get_default_instances_root_dir().expect("managed root");
         assert_eq!(
             root,
             temp_root.join("instances").join("minimax_code"),
-            "受管实例根应跟随 COCKPIT_TOOLS_DATA_DIR"
+            "受管实例根应跟随 ORIVANTA_DATA_DIR"
         );
         let instance_dir = root.join(format!("test-{}", Uuid::new_v4().simple()));
 
@@ -973,12 +973,12 @@ mod minimax_code_instance_tests {
 
         // 恢复环境变量，避免影响同进程内的其它测试。
         match previous {
-            Some(value) => std::env::set_var("COCKPIT_TOOLS_DATA_DIR", value),
-            None => std::env::remove_var("COCKPIT_TOOLS_DATA_DIR"),
+            Some(value) => std::env::set_var("ORIVANTA_DATA_DIR", value),
+            None => std::env::remove_var("ORIVANTA_DATA_DIR"),
         }
         match previous_test {
-            Some(value) => std::env::set_var("COCKPIT_TOOLS_TEST_DATA_DIR", value),
-            None => std::env::remove_var("COCKPIT_TOOLS_TEST_DATA_DIR"),
+            Some(value) => std::env::set_var("ORIVANTA_TEST_DATA_DIR", value),
+            None => std::env::remove_var("ORIVANTA_TEST_DATA_DIR"),
         }
         let _ = fs::remove_dir_all(&temp_root);
     }

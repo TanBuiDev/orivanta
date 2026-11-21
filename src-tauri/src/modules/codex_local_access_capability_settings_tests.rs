@@ -259,9 +259,9 @@ struct TestData {
 impl TestData {
     fn new() -> Self {
         let directory = tempfile::tempdir().unwrap();
-        let previous = std::env::var_os("COCKPIT_TOOLS_TEST_DATA_DIR");
+        let previous = std::env::var_os("ORIVANTA_TEST_DATA_DIR");
         let previous_server = std::env::var_os("CHATGPT_PLAN_TEST_SERVER");
-        std::env::set_var("COCKPIT_TOOLS_TEST_DATA_DIR", directory.path());
+        std::env::set_var("ORIVANTA_TEST_DATA_DIR", directory.path());
         // This existing test-only switch also isolates get_codex_home. No
         // request is made to this closed loopback endpoint by the settings test.
         std::env::set_var("CHATGPT_PLAN_TEST_SERVER", "http://127.0.0.1:9");
@@ -275,9 +275,9 @@ impl TestData {
 impl Drop for TestData {
     fn drop(&mut self) {
         if let Some(previous) = &self.previous {
-            std::env::set_var("COCKPIT_TOOLS_TEST_DATA_DIR", previous);
+            std::env::set_var("ORIVANTA_TEST_DATA_DIR", previous);
         } else {
-            std::env::remove_var("COCKPIT_TOOLS_TEST_DATA_DIR");
+            std::env::remove_var("ORIVANTA_TEST_DATA_DIR");
         }
         if let Some(previous) = &self.previous_server {
             std::env::set_var("CHATGPT_PLAN_TEST_SERVER", previous);

@@ -334,7 +334,7 @@ pub fn handle_external_import_args<R: Runtime>(
             continue;
         }
         let candidate_is_deep_link =
-            candidate.starts_with("cockpit-tools://") || candidate.starts_with("cockpittools://");
+            candidate.starts_with("orivanta://") || candidate.starts_with("orivanta-dev://");
         if candidate_is_deep_link {
             saw_deep_link = true;
         }
@@ -449,7 +449,7 @@ mod tests {
 
     #[test]
     fn parse_antigravity_overview_alias() {
-        let raw = "cockpittools://account-import?page=overview&token=1%2F%2F0gTokenDemo";
+        let raw = "orivanta://account-import?page=overview&token=1%2F%2F0gTokenDemo";
         let payload = parse_external_import_url(raw).expect("payload");
         assert_eq!(payload.provider_id, "antigravity");
         assert_eq!(payload.page, "overview");

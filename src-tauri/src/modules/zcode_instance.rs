@@ -826,7 +826,7 @@ mod tests {
     fn process_collection_uses_helper_user_data_dir_after_main_rewrites_argv() {
         let output = r#"
 37764     1 ZCode [333]
-37767 37764 /Applications/ZCode.app/Contents/Frameworks/ZCode Helper.app/Contents/MacOS/ZCode Helper --type=gpu-process --user-data-dir=/Users/test/.antigravity_cockpit/instances/zcode/managed/electron --shared-files
+37767 37764 /Applications/ZCode.app/Contents/Frameworks/ZCode Helper.app/Contents/MacOS/ZCode Helper --type=gpu-process --user-data-dir=/Users/test/.orivanta_legacy/instances/zcode/managed/electron --shared-files
 41440     1 ZCode
 41443 41440 /Applications/ZCode.app/Contents/Frameworks/ZCode Helper.app/Contents/MacOS/ZCode Helper --type=gpu-process --user-data-dir=/Users/test/Library/Application Support/ZCode --shared-files
 "#;
@@ -836,7 +836,7 @@ mod tests {
                 (
                     37764,
                     Some(
-                        "/Users/test/.antigravity_cockpit/instances/zcode/managed/electron"
+                        "/Users/test/.orivanta_legacy/instances/zcode/managed/electron"
                             .to_string()
                     )
                 ),
@@ -851,7 +851,7 @@ mod tests {
     #[test]
     fn pid_resolution_distinguishes_default_and_managed_user_data_dirs() {
         let default_dir = Path::new("/Users/test/Library/Application Support/ZCode");
-        let managed_root = Path::new("/Users/test/.antigravity_cockpit/instances/zcode/managed");
+        let managed_root = Path::new("/Users/test/.orivanta_legacy/instances/zcode/managed");
         let entries = vec![
             (
                 37764,

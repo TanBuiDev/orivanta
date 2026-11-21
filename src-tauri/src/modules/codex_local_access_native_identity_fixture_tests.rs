@@ -7,16 +7,16 @@ fn native_host_identity_fixture_survives_environment_rotation_and_keeps_validati
     impl Drop for RestoreDataDirectory {
         fn drop(&mut self) {
             if let Some(previous) = self.0.take() {
-                std::env::set_var("COCKPIT_TOOLS_TEST_DATA_DIR", previous);
+                std::env::set_var("ORIVANTA_TEST_DATA_DIR", previous);
             } else {
-                std::env::remove_var("COCKPIT_TOOLS_TEST_DATA_DIR");
+                std::env::remove_var("ORIVANTA_TEST_DATA_DIR");
             }
         }
     }
-    let _restore = RestoreDataDirectory(std::env::var_os("COCKPIT_TOOLS_TEST_DATA_DIR"));
+    let _restore = RestoreDataDirectory(std::env::var_os("ORIVANTA_TEST_DATA_DIR"));
     tokio::runtime::Runtime::new().unwrap().block_on(async {
         let old_global = tempfile::tempdir().unwrap();
-        std::env::set_var("COCKPIT_TOOLS_TEST_DATA_DIR", old_global.path());
+        std::env::set_var("ORIVANTA_TEST_DATA_DIR", old_global.path());
         let host = native_test_routing_host();
         let caller = native_test_caller(NATIVE_PRIMARY_CALLER);
         let mut request = native_test_route_request("isolated-installation");
@@ -35,7 +35,7 @@ fn native_host_identity_fixture_survives_environment_rotation_and_keeps_validati
         // This is the failing concurrent fixture lifecycle: the global path
         // changes and its prior directory disappears between route attempts.
         let new_global = tempfile::tempdir().unwrap();
-        std::env::set_var("COCKPIT_TOOLS_TEST_DATA_DIR", new_global.path());
+        std::env::set_var("ORIVANTA_TEST_DATA_DIR", new_global.path());
         drop(old_global);
         let second = native_select_route(&host, &caller, request.clone())
             .await

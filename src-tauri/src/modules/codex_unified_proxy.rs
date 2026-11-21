@@ -523,18 +523,18 @@ mod tests {
             fn drop(&mut self) {
                 reset_cache();
                 match &self.0 {
-                    Some(value) => std::env::set_var("COCKPIT_TOOLS_TEST_DATA_DIR", value),
-                    None => std::env::remove_var("COCKPIT_TOOLS_TEST_DATA_DIR"),
+                    Some(value) => std::env::set_var("ORIVANTA_TEST_DATA_DIR", value),
+                    None => std::env::remove_var("ORIVANTA_TEST_DATA_DIR"),
                 }
                 match &self.1 {
-                    Some(value) => std::env::set_var("COCKPIT_TOOLS_DATA_DIR", value),
-                    None => std::env::remove_var("COCKPIT_TOOLS_DATA_DIR"),
+                    Some(value) => std::env::set_var("ORIVANTA_DATA_DIR", value),
+                    None => std::env::remove_var("ORIVANTA_DATA_DIR"),
                 }
             }
         }
-        let _restore = RestoreEnv(std::env::var_os("COCKPIT_TOOLS_TEST_DATA_DIR"), std::env::var_os("COCKPIT_TOOLS_DATA_DIR"));
-        std::env::set_var("COCKPIT_TOOLS_TEST_DATA_DIR", &temp.0);
-        std::env::set_var("COCKPIT_TOOLS_DATA_DIR", &temp.0);
+        let _restore = RestoreEnv(std::env::var_os("ORIVANTA_TEST_DATA_DIR"), std::env::var_os("ORIVANTA_DATA_DIR"));
+        std::env::set_var("ORIVANTA_TEST_DATA_DIR", &temp.0);
+        std::env::set_var("ORIVANTA_DATA_DIR", &temp.0);
         reset_cache();
         let path = store_path().unwrap();
         assert_eq!(path, temp.0.join(STORE_FILE));

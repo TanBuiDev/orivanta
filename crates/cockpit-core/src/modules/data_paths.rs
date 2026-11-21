@@ -7,10 +7,10 @@ use std::path::{Path, PathBuf};
 use std::sync::{LazyLock, Mutex, OnceLock};
 use std::time::Duration;
 
-pub const DATA_DIR: &str = ".cockpit_tools";
-pub const DEV_DATA_DIR: &str = ".cockpit_tools_dev";
-const LEGACY_DATA_DIR: &str = ".antigravity_cockpit";
-const LEGACY_DEV_DATA_DIR: &str = ".antigravity_cockpit_dev";
+pub const DATA_DIR: &str = ".orivanta";
+pub const DEV_DATA_DIR: &str = ".orivanta_dev";
+const LEGACY_DATA_DIR: &str = ".orivanta_legacy";
+const LEGACY_DEV_DATA_DIR: &str = ".orivanta_legacy_dev";
 static DATA_ROOT: OnceLock<PathBuf> = OnceLock::new();
 static DEV_ROOT: OnceLock<PathBuf> = OnceLock::new();
 static DATA_ROOT_PREFERENCE: OnceLock<Result<Option<PathBuf>, String>> = OnceLock::new();
@@ -21,13 +21,13 @@ static COMPATIBILITY_TASKS: LazyLock<Mutex<HashSet<PathBuf>>> =
     LazyLock::new(|| Mutex::new(HashSet::new()));
 
 pub fn is_dev_profile() -> bool {
-    std::env::var("COCKPIT_TOOLS_PROFILE")
+    std::env::var("ORIVANTA_PROFILE")
         .map(|value| value.trim().eq_ignore_ascii_case("dev"))
         .unwrap_or(false)
 }
 
 pub fn environment_data_dir() -> Option<PathBuf> {
-    std::env::var("COCKPIT_TOOLS_DATA_DIR")
+    std::env::var("ORIVANTA_DATA_DIR")
         .ok()
         .map(|value| value.trim().to_owned())
         .filter(|value| !value.is_empty())
@@ -36,9 +36,9 @@ pub fn environment_data_dir() -> Option<PathBuf> {
 
 fn data_dir_preference_path(home: &Path, dev: bool) -> PathBuf {
     home.join(if dev {
-        ".cockpit_tools_dev-data-root.json"
+        ".orivanta_dev-data-root.json"
     } else {
-        ".cockpit_tools-data-root.json"
+        ".orivanta-data-root.json"
     })
 }
 

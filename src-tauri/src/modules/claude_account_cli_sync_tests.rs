@@ -118,18 +118,18 @@ fn cli_sync_targets_only_bound_cli_instances_and_deduplicates_paths() {
 fn cli_sync_before_quota_refresh_adopts_rotation_only_from_still_bound_identity() {
     let _lock = crate::modules::test_support::env_lock().lock().unwrap();
     let temp = tempfile::tempdir().unwrap();
-    let previous = std::env::var_os("COCKPIT_TOOLS_TEST_DATA_DIR");
+    let previous = std::env::var_os("ORIVANTA_TEST_DATA_DIR");
     struct RestoreEnv(Option<std::ffi::OsString>);
     impl Drop for RestoreEnv {
         fn drop(&mut self) {
             match &self.0 {
-                Some(previous) => std::env::set_var("COCKPIT_TOOLS_TEST_DATA_DIR", previous),
-                None => std::env::remove_var("COCKPIT_TOOLS_TEST_DATA_DIR"),
+                Some(previous) => std::env::set_var("ORIVANTA_TEST_DATA_DIR", previous),
+                None => std::env::remove_var("ORIVANTA_TEST_DATA_DIR"),
             }
         }
     }
     let _restore = RestoreEnv(previous);
-    std::env::set_var("COCKPIT_TOOLS_TEST_DATA_DIR", temp.path());
+    std::env::set_var("ORIVANTA_TEST_DATA_DIR", temp.path());
     let dir = temp.path().join("cli");
     fs::create_dir(&dir).unwrap();
     let config_path = dir.join(CLAUDE_CODE_CONFIG_FILE);
@@ -178,8 +178,8 @@ fn oauth_result_merges_user_edits_and_rejects_reauthorization_or_deleted_account
     let _lock = crate::modules::test_support::env_lock().lock().unwrap();
     let dir = std::env::temp_dir().join(format!("claude-oauth-cas-{}", uuid::Uuid::new_v4()));
     fs::create_dir_all(&dir).unwrap();
-    let previous = std::env::var_os("COCKPIT_TOOLS_TEST_DATA_DIR");
-    std::env::set_var("COCKPIT_TOOLS_TEST_DATA_DIR", &dir);
+    let previous = std::env::var_os("ORIVANTA_TEST_DATA_DIR");
+    std::env::set_var("ORIVANTA_TEST_DATA_DIR", &dir);
     let config =
         json!({"oauthAccount": {"accountUuid": "cas-account", "emailAddress": "cas@example.com"}});
     let original = derive_account_from_snapshots(
@@ -237,9 +237,9 @@ fn oauth_result_merges_user_edits_and_rejects_reauthorization_or_deleted_account
         .iter()
         .any(|account| account.id == original.id));
     if let Some(value) = previous {
-        std::env::set_var("COCKPIT_TOOLS_TEST_DATA_DIR", value);
+        std::env::set_var("ORIVANTA_TEST_DATA_DIR", value);
     } else {
-        std::env::remove_var("COCKPIT_TOOLS_TEST_DATA_DIR");
+        std::env::remove_var("ORIVANTA_TEST_DATA_DIR");
     }
     fs::remove_dir_all(dir).unwrap();
 }

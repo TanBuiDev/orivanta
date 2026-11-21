@@ -602,7 +602,7 @@ mod legacy_platform_adapter_cleanup_tests {
 
     #[test]
     fn matches_orphaned_legacy_platform_adapter() {
-        let line = " 1359     1 /Users/jieli/.antigravity_cockpit/platform-packages/codex/current/adapter/macos/cockpit-codex-adapter";
+        let line = " 1359     1 /Users/jieli/.orivanta_legacy/platform-packages/codex/current/adapter/macos/cockpit-codex-adapter";
         assert_eq!(
             orphaned_legacy_platform_adapter_pid_from_ps_line(line, 99999),
             Some(1359)
@@ -611,13 +611,13 @@ mod legacy_platform_adapter_cleanup_tests {
 
     #[test]
     fn ignores_non_orphaned_or_current_processes() {
-        let line = " 1359 1805 /Users/jieli/.antigravity_cockpit/platform-packages/codex/current/adapter/macos/cockpit-codex-adapter";
+        let line = " 1359 1805 /Users/jieli/.orivanta_legacy/platform-packages/codex/current/adapter/macos/cockpit-codex-adapter";
         assert_eq!(
             orphaned_legacy_platform_adapter_pid_from_ps_line(line, 99999),
             None
         );
 
-        let current_line = " 1359 1 /Users/jieli/.antigravity_cockpit/platform-packages/codex/current/adapter/macos/cockpit-codex-adapter";
+        let current_line = " 1359 1 /Users/jieli/.orivanta_legacy/platform-packages/codex/current/adapter/macos/cockpit-codex-adapter";
         assert_eq!(
             orphaned_legacy_platform_adapter_pid_from_ps_line(current_line, 1359),
             None
@@ -679,8 +679,8 @@ mod managed_sidecar_port_cleanup_tests {
     #[test]
     fn requires_expected_sidecar_binary_and_config_path() {
         let config =
-            Path::new("/Users/demo/.antigravity_cockpit/codex_local_access_sidecar/config.json");
-        let command = "/Applications/Cockpit Tools.app/Contents/MacOS/cockpit-cliproxy --config /Users/demo/.antigravity_cockpit/codex_local_access_sidecar/config.json --parent-pid 1805";
+            Path::new("/Users/demo/.orivanta_legacy/codex_local_access_sidecar/config.json");
+        let command = "/Applications/Cockpit Tools.app/Contents/MacOS/cockpit-cliproxy --config /Users/demo/.orivanta_legacy/codex_local_access_sidecar/config.json --parent-pid 1805";
         assert!(managed_sidecar_command_matches(
             command,
             "cockpit-cliproxy",
@@ -692,7 +692,7 @@ mod managed_sidecar_port_cleanup_tests {
             Path::new("/Users/demo/another/config.json")
         ));
         assert!(!managed_sidecar_command_matches(
-            "python server.py --config /Users/demo/.antigravity_cockpit/codex_local_access_sidecar/config.json",
+            "python server.py --config /Users/demo/.orivanta_legacy/codex_local_access_sidecar/config.json",
             "cockpit-cliproxy",
             config
         ));
@@ -1315,7 +1315,7 @@ mod codex_windows_default_instance_tests {
 
     const DEFAULT_APP_DIR: &str = r"C:\Users\me\AppData\Roaming\Codex\web\Codex";
     const MANAGED_APP_DIR: &str =
-        r"C:\Users\me\AppData\Roaming\.antigravity_cockpit\instances\codex-app-data\5184";
+        r"C:\Users\me\AppData\Roaming\.orivanta_legacy\instances\codex-app-data\5184";
 
     #[test]
     fn ignores_last_pid_reused_by_an_unrelated_process() {

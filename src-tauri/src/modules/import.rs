@@ -1325,9 +1325,9 @@ mod account_note_import_tests {
         ));
         let _ = fs::remove_dir_all(&data_dir);
         fs::create_dir_all(&data_dir).expect("create test data dir");
-        std::env::set_var("COCKPIT_TOOLS_TEST_DATA_DIR", &data_dir);
+        std::env::set_var("ORIVANTA_TEST_DATA_DIR", &data_dir);
         let result = run();
-        std::env::remove_var("COCKPIT_TOOLS_TEST_DATA_DIR");
+        std::env::remove_var("ORIVANTA_TEST_DATA_DIR");
         let _ = fs::remove_dir_all(&data_dir);
         result
     }

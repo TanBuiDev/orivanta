@@ -321,10 +321,10 @@ fn custom_override_is_respected_without_touching_home_or_roaming() {
             ])
             .env("COCKPIT_DATA_PATH_TEST_CHILD", &root.0)
             .env(
-                "COCKPIT_TOOLS_DATA_DIR",
+                "ORIVANTA_DATA_DIR",
                 format!("  {}  ", root.0.join("custom").display()),
             )
-            .env("COCKPIT_TOOLS_PROFILE", profile)
+            .env("ORIVANTA_PROFILE", profile)
             .env("APPDATA", root.0.join("Roaming"))
             .output()
             .unwrap();
@@ -379,12 +379,12 @@ fn saved_data_directory_switches_on_restart_and_can_be_reset() {
             .env("COCKPIT_TOOLS_TEST_ISOLATED_HOME", &root.0)
             .env("XDG_DATA_HOME", root.0.join("local-data"))
             .env("COCKPIT_DATA_PATH_TEST_ACTION", action)
-            .env_remove("COCKPIT_TOOLS_PROFILE")
-            .env_remove("COCKPIT_TOOLS_DATA_DIR")
-            .env_remove("COCKPIT_TOOLS_TEST_DATA_DIR")
-            .env_remove("COCKPIT_TEST_DATA_DIR");
+            .env_remove("ORIVANTA_PROFILE")
+            .env_remove("ORIVANTA_DATA_DIR")
+            .env_remove("ORIVANTA_TEST_DATA_DIR")
+            .env_remove("ORIVANTA_LEGACY_TEST_DATA_DIR");
         if action == "override" {
-            command.env("COCKPIT_TOOLS_DATA_DIR", &temporary_override);
+            command.env("ORIVANTA_DATA_DIR", &temporary_override);
         }
         let output = command.output().unwrap();
         assert!(
@@ -428,7 +428,7 @@ fn saved_data_directory_child() {
             assert_eq!(managed_instances_root_dir("cursor").unwrap(), selected.join("instances/cursor"));
             let local_data = dirs::data_local_dir().unwrap();
             assert!(local_data.starts_with(&home));
-            let legacy = local_data.join("com.antigravity.cockpit-tools/codex_accounts");
+            let legacy = local_data.join("dev.tanbuidev.orivanta.legacy/codex_accounts");
             fs::create_dir_all(&legacy).unwrap();
             fs::write(legacy.join("legacy-only.json"), "{}").unwrap();
             let _ = crate::modules::codex_account::list_accounts_checked().unwrap();
@@ -448,4 +448,18 @@ fn saved_data_directory_child() {
         }
         _ => panic!("unknown data directory test action: {action}"),
     }
+}
+
+#[test]
+fn ignores_cockpit_tools_profile_locations() {
+    let home = tempfile::tempdir().unwrap();
+    for name in [".cockpit_tools", ".antigravity_cockpit", ".cockpit_tools_dev"] {
+        std::fs::create_dir(home.path().join(name)).unwrap();
+    }
+    let stable = super::select_root(home.path(), false).unwrap();
+    let development = super::select_root(home.path(), true).unwrap();
+    assert_eq!(stable.path, home.path().join(".orivanta"));
+    assert_eq!(development.path, home.path().join(".orivanta_dev"));
+    assert!(stable.compatibility.is_none());
+    assert!(development.compatibility.is_none());
 }
