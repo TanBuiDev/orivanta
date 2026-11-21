@@ -32,7 +32,7 @@ fn path() -> Result<PathBuf, String> {
     #[cfg(not(test))]
     Ok(dirs::data_local_dir()
         .ok_or("CODEX_DEVICE_RESTRICTION_DIRECTORY")?
-        .join("cockpit-tools-local")
+        .join("orivanta-local")
         .join("codex-device-restrictions.sqlite"))
 }
 
